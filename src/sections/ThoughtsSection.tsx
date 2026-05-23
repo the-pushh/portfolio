@@ -14,6 +14,10 @@ export default async function ThoughtsSection() {
         <div className="cli">
           <span className="prompt">›</span> cat ~/thoughts/*.md --sort=recent
         </div>
+        <div className="sec-head">
+          <h2>thoughts.</h2>
+          <p className="sec-sub">A blog. Mostly essays on building software, design as a social act, and music tech.</p>
+        </div>
         <div>
           {thoughts.map((t, i) => (
             <Link key={t.id} href={`/thoughts/${t.slug}`} className="thought-row">

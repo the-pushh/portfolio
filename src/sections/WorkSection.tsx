@@ -56,6 +56,10 @@ export default async function WorkSection() {
         <div className="cli">
           <span className="prompt">›</span> ls ~/work --shipped --sort=recent
         </div>
+        <div className="sec-head">
+          <h2>work &amp; projects.</h2>
+          <p className="sec-sub">Where I spend my hours — and the small things I&apos;ve shipped alongside.</p>
+        </div>
         <div className="label">currently shipping</div>
         <div className="card-grid">
           {current.map((p: ProjectDTO) => (

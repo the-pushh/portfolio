@@ -13,6 +13,10 @@ export default async function ToolboxSection() {
         <div className="cli">
           <span className="prompt">›</span> cat toolbox.toml
         </div>
+        <div className="sec-head">
+          <h2>my toolbox.</h2>
+          <p className="sec-sub">What I reach for. Roughly grouped, loosely opinionated.</p>
+        </div>
         <div className="tool-grid">
           {cats.map((c) => (
             <div key={c.id}>

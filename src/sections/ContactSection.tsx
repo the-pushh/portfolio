@@ -14,6 +14,10 @@ export default async function ContactSection() {
         <div className="cli">
           <span className="prompt">›</span> dig +short pushkar --anywhere
         </div>
+        <div className="sec-head">
+          <h2>say hello.</h2>
+          <p className="sec-sub">Email is fastest. I read everything. I usually reply within a day.</p>
+        </div>
         <div>
           {socials.map((s, i) => (
             <a

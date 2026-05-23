@@ -135,6 +135,26 @@ a {
   color: var(--accent);
 }
 
+.sec-head {
+  margin-bottom: 22px;
+}
+.sec-head h2 {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--ink);
+}
+.sec-sub {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: 60ch;
+  font-weight: 300;
+}
+
 .sec-foot {
   margin-top: 28px;
   padding-top: 16px;
