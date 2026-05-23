@@ -1,3 +1,11 @@
+# Next.js
+.next/
+out/
+prisma/dev.db
+prisma/dev.db-journal
+.env
+.env.local
+
 # Logs
 logs
 *.log
