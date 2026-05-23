@@ -117,7 +117,7 @@ export default function StatusBar({ status, tracks }: Props) {
             </div>
           ) : null}
         </button>
-        <a href="#" className="pill" title="v1 site">
+        <a href="/v1/" className="pill" title="View v1 portfolio" target="_blank" rel="noopener noreferrer">
           v1 ↗
         </a>
       </div>

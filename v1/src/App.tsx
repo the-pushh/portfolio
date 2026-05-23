@@ -33,6 +33,22 @@ function App() {
 
   return (
 		<div className="h-[90vh] md:h-[95vh] flex flex-col w-full overflow-x-hidden scroll-smooth">
+			<div style={{
+				position: 'fixed', top: 0, left: 0, right: 0, zIndex: 999,
+				background: '#1e1e1e', color: '#f2e8e4', padding: '8px 20px',
+				display: 'flex', alignItems: 'center', justifyContent: 'center',
+				gap: '14px', fontSize: '13px', fontFamily: 'system-ui, sans-serif',
+				borderBottom: '1px solid rgba(242,232,228,0.14)',
+			}}>
+				<span style={{ opacity: 0.6 }}>You're viewing v1 · data here is outdated</span>
+				<a href="/" style={{
+					padding: '4px 14px', borderRadius: '999px',
+					background: '#FEACD6', color: '#000',
+					fontWeight: 600, fontSize: '12px', textDecoration: 'none',
+					transition: 'opacity .15s',
+				}}>go to v2 →</a>
+			</div>
+			<div style={{ height: '37px', flexShrink: 0 }} />
 			<TopBar />
 			<Nav />
 
