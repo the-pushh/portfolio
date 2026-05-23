@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "2mb",
     },
   },
+  async rewrites() {
+    return [
+      { source: "/v1", destination: "/v1/index.html" },
+    ];
+  },
 };
 
 export default nextConfig;
