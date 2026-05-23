@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Thought {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String
+  content   String   @default("")
+  tags      String
+  date      String
+  readTime  String
+  featured  Boolean  @default(false)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  role      String
+  when      String
+  blurb     String
+  content   String   @default("")
+  tags      String
+  live      String   @default("")
+  code      String   @default("")
+  current   Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Social {
+  id    String @id @default(cuid())
+  key   String
+  val   String
+  href  String
+  order Int    @default(0)
+}
+
+model Track {
+  id     String @id @default(cuid())
+  artist String
+  title  String
+  len    String
+  order  Int    @default(0)
+}
+
+model ToolboxCategory {
+  id    String @id @default(cuid())
+  name  String
+  items String
+  order Int    @default(0)
+}
+
+model SiteConfig {
+  id        String @id @default("singleton")
+  name      String @default("Pushkar Borkar")
+  role      String @default("Generalist Engineer")
+  location  String @default("Bangalore, IN")
+  accent    String @default("#FEACD6")
+  status    String @default("work with me")
+  statusDot String @default("warm")
+  bio       String @default("")
+  about     String @default("")
+  email     String @default("thepushh@gmail.com")
+  resumeUrl String @default("/resume")
+  calUrl    String @default("https://cal.com/pushkar")
+}

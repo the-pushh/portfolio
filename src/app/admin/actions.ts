@@ -1,0 +1,206 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { prisma } from "@/lib/db";
+import { isAdmin } from "@/lib/auth";
+
+async function guard() {
+  if (!(await isAdmin())) throw new Error("unauthorized");
+}
+
+function parseTags(s: string): string {
+  const arr = s
+    .split(",")
+    .map((x) => x.trim())
+    .filter(Boolean);
+  return JSON.stringify(arr);
+}
+
+function bool(fd: FormData, key: string): boolean {
+  const v = fd.get(key);
+  return v === "on" || v === "true";
+}
+
+function str(fd: FormData, key: string, fallback = ""): string {
+  const v = fd.get(key);
+  return typeof v === "string" ? v : fallback;
+}
+
+function int(fd: FormData, key: string, fallback = 0): number {
+  const v = fd.get(key);
+  if (typeof v !== "string") return fallback;
+  const n = parseInt(v, 10);
+  return isNaN(n) ? fallback : n;
+}
+
+// ----- Thoughts -----
+export async function saveThought(id: string | null, fd: FormData) {
+  await guard();
+  const data = {
+    slug: str(fd, "slug"),
+    title: str(fd, "title"),
+    excerpt: str(fd, "excerpt"),
+    content: str(fd, "content"),
+    tags: parseTags(str(fd, "tags")),
+    date: str(fd, "date"),
+    readTime: str(fd, "readTime"),
+    featured: bool(fd, "featured"),
+    published: bool(fd, "published"),
+  };
+  if (id && id !== "new") {
+    await prisma.thought.update({ where: { id }, data });
+  } else {
+    await prisma.thought.create({ data });
+  }
+  revalidatePath("/admin/thoughts");
+  revalidatePath("/thoughts");
+  revalidatePath("/");
+  redirect("/admin/thoughts");
+}
+
+export async function deleteThought(id: string) {
+  await guard();
+  await prisma.thought.delete({ where: { id } });
+  revalidatePath("/admin/thoughts");
+  revalidatePath("/thoughts");
+  revalidatePath("/");
+}
+
+// ----- Projects -----
+export async function saveProject(id: string | null, fd: FormData) {
+  await guard();
+  const data = {
+    slug: str(fd, "slug"),
+    name: str(fd, "name"),
+    role: str(fd, "role"),
+    when: str(fd, "when"),
+    blurb: str(fd, "blurb"),
+    content: str(fd, "content"),
+    tags: parseTags(str(fd, "tags")),
+    live: str(fd, "live"),
+    code: str(fd, "code"),
+    current: bool(fd, "current"),
+    order: int(fd, "order"),
+  };
+  if (id && id !== "new") {
+    await prisma.project.update({ where: { id }, data });
+  } else {
+    await prisma.project.create({ data });
+  }
+  revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath("/");
+  redirect("/admin/projects");
+}
+
+export async function deleteProject(id: string) {
+  await guard();
+  await prisma.project.delete({ where: { id } });
+  revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath("/");
+}
+
+// ----- Socials -----
+export async function saveSocial(id: string | null, fd: FormData) {
+  await guard();
+  const data = {
+    key: str(fd, "key"),
+    val: str(fd, "val"),
+    href: str(fd, "href"),
+    order: int(fd, "order"),
+  };
+  if (id && id !== "new") {
+    await prisma.social.update({ where: { id }, data });
+  } else {
+    await prisma.social.create({ data });
+  }
+  revalidatePath("/admin/socials");
+  revalidatePath("/");
+}
+
+export async function deleteSocial(id: string) {
+  await guard();
+  await prisma.social.delete({ where: { id } });
+  revalidatePath("/admin/socials");
+  revalidatePath("/");
+}
+
+// ----- Tracks -----
+export async function saveTrack(id: string | null, fd: FormData) {
+  await guard();
+  const data = {
+    artist: str(fd, "artist"),
+    title: str(fd, "title"),
+    len: str(fd, "len"),
+    order: int(fd, "order"),
+  };
+  if (id && id !== "new") {
+    await prisma.track.update({ where: { id }, data });
+  } else {
+    await prisma.track.create({ data });
+  }
+  revalidatePath("/admin/tracks");
+  revalidatePath("/");
+}
+
+export async function deleteTrack(id: string) {
+  await guard();
+  await prisma.track.delete({ where: { id } });
+  revalidatePath("/admin/tracks");
+  revalidatePath("/");
+}
+
+// ----- Toolbox -----
+export async function saveToolbox(id: string | null, fd: FormData) {
+  await guard();
+  const items = str(fd, "items")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const data = {
+    name: str(fd, "name"),
+    items: JSON.stringify(items),
+    order: int(fd, "order"),
+  };
+  if (id && id !== "new") {
+    await prisma.toolboxCategory.update({ where: { id }, data });
+  } else {
+    await prisma.toolboxCategory.create({ data });
+  }
+  revalidatePath("/admin/toolbox");
+  revalidatePath("/");
+}
+
+export async function deleteToolbox(id: string) {
+  await guard();
+  await prisma.toolboxCategory.delete({ where: { id } });
+  revalidatePath("/admin/toolbox");
+  revalidatePath("/");
+}
+
+// ----- Site config -----
+export async function saveConfig(fd: FormData) {
+  await guard();
+  const data = {
+    name: str(fd, "name"),
+    role: str(fd, "role"),
+    location: str(fd, "location"),
+    accent: str(fd, "accent"),
+    status: str(fd, "status"),
+    statusDot: str(fd, "statusDot"),
+    bio: str(fd, "bio"),
+    about: str(fd, "about"),
+    email: str(fd, "email"),
+    resumeUrl: str(fd, "resumeUrl"),
+    calUrl: str(fd, "calUrl"),
+  };
+  await prisma.siteConfig.upsert({
+    where: { id: "singleton" },
+    update: data,
+    create: { id: "singleton", ...data },
+  });
+  revalidatePath("/");
+  revalidatePath("/admin/config");
+}

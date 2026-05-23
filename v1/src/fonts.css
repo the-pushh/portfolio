@@ -1,0 +1,107 @@
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-Light.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-Light.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-Light.woff2") format(woff2);
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-LightItalic.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-LightItalic.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-LightItalic.woff2") format(woff2);
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-Regular.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-Regular.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-Regular.woff2") format(woff2);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-RegularItalic.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-RegularItalic.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-RegularItalic.woff2") format(woff2);
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-Medium.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-Medium.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-Medium.woff2") format(woff2);
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-MediumItalic.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-MediumItalic.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-MediumItalic.woff2") format(woff2);
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-SemiBold.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-SemiBold.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-SemiBold.woff2") format(woff2);
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-SemiBoldItalic.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-SemiBoldItalic.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-SemiBoldItalic.woff2") format(woff2);
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-Bold.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-Bold.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-Bold.woff2") format(woff2);
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-BoldItalic.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-BoldItalic.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-BoldItalic.woff2") format(woff2);
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-Heavy.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-Heavy.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-Heavy.woff2") format(woff2);
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Matter";
+  src: url("./assets/fonts/MatterTRIAL-HeavyItalic.otf") format(opentype),
+    url("./assets/fonts/MatterTRIAL-HeavyItalic.woff") format(woff),
+    url("./assets/fonts/MatterTRIAL-HeavyItalic.woff2") format(woff2);
+  font-weight: 800;
+  font-style: italic;
+}
