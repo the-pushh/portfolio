@@ -46,6 +46,8 @@ export default async function WorkSection() {
   const projects = await getProjects();
   const current = projects.filter((p) => p.current);
   const past = projects.filter((p) => !p.current);
+  const featured = current[0];
+  const rest: ProjectDTO[] = [...current.slice(1), ...past];
 
   return (
     <section id="work" className="section">
@@ -60,73 +62,60 @@ export default async function WorkSection() {
           <h2>work &amp; projects.</h2>
           <p className="sec-sub">Where I spend my hours — and the small things I&apos;ve shipped alongside.</p>
         </div>
-        <div className="label">currently shipping</div>
-        <div className="card-grid">
-          {current.map((p: ProjectDTO) => (
-            <article key={p.id} className="card">
-              <Poster name={p.name} />
+
+        {/* Featured — single full-width card */}
+        {featured && (
+          <>
+            <div className="label">currently shipping</div>
+            <article className="card">
+              <Poster name={featured.name} />
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                <Link
-                  href={`/projects/${p.slug}`}
-                  style={{ fontFamily: "var(--font-edit)", fontStyle: "italic", fontSize: 22 }}
-                >
-                  {p.name}
+                <Link href={`/projects/${featured.slug}`} style={{ fontFamily: "var(--font-edit)", fontStyle: "italic", fontSize: 22 }}>
+                  {featured.name}
                 </Link>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--ink-mute)" }}>
-                  {p.when}
+                  {featured.when}
                 </span>
               </div>
               <div style={{ fontSize: 12.5, color: "var(--ink-dim)", fontFamily: "var(--font-mono)" }}>
-                {p.role}
+                {featured.role}
               </div>
-              <p style={{ color: "var(--ink-soft)", fontSize: 14, margin: 0 }}>{p.blurb}</p>
+              <p style={{ color: "var(--ink-soft)", fontSize: 14, margin: 0 }}>{featured.blurb}</p>
               <div className="tag-row">
-                {p.tags.map((t) => (
-                  <span key={t} className="tag">
-                    {t}
-                  </span>
-                ))}
+                {featured.tags.map((t) => <span key={t} className="tag">{t}</span>)}
               </div>
               <div style={{ display: "flex", gap: 12, marginTop: 4 }}>
-                {p.live ? (
-                  <a className="pill" href={p.live} target="_blank" rel="noreferrer">
-                    live ↗
-                  </a>
-                ) : null}
-                {p.code ? (
-                  <a className="pill" href={p.code} target="_blank" rel="noreferrer">
-                    code ↗
-                  </a>
-                ) : null}
+                {featured.live && <a className="pill" href={featured.live} target="_blank" rel="noreferrer">live ↗</a>}
+                {featured.code && <a className="pill" href={featured.code} target="_blank" rel="noreferrer">code ↗</a>}
               </div>
             </article>
-          ))}
-        </div>
-        <div className="label" style={{ marginTop: 36 }}>
-          past projects.
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          {past.map((p) => (
-            <Link
-              key={p.id}
-              href={`/projects/${p.slug}`}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "baseline",
-                padding: "12px 0",
-                borderBottom: "1px solid var(--line-soft)",
-              }}
-            >
-              <span style={{ fontFamily: "var(--font-edit)", fontStyle: "italic", fontSize: 18 }}>
-                {p.name}
-              </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--ink-dim)" }}>
-                {p.when} ↗
-              </span>
-            </Link>
-          ))}
-        </div>
+          </>
+        )}
+
+        {/* Rest — 2-col mini cards with description + links */}
+        {rest.length > 0 && (
+          <>
+            <div className="label" style={{ marginTop: 36 }}>projects.</div>
+            <div className="proj-grid">
+              {rest.map((p) => (
+                <article key={p.id} className="proj-card">
+                  <div className="proj-card-top">
+                    <Link href={`/projects/${p.slug}`} className="proj-card-name">{p.name}</Link>
+                    <span className="proj-card-when">{p.when}</span>
+                  </div>
+                  <div className="proj-card-role">{p.role}</div>
+                  <p className="proj-card-blurb">{p.blurb}</p>
+                  <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 10, flexWrap: "wrap" as const }}>
+                    {p.live && <a className="pill" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
+                    {p.code && <a className="pill" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+                    <Link className="pill" href={`/projects/${p.slug}`}>case →</Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
+
         <div className="sec-foot">
           <Link href="/projects">browse every project →</Link>
         </div>

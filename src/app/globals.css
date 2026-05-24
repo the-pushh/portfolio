@@ -517,6 +517,60 @@ h1.editorial,
   gap: 18px;
 }
 
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 720px) {
+  .proj-grid { grid-template-columns: 1fr; }
+}
+
+.proj-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--bg-2);
+  transition: border-color 0.2s;
+}
+.proj-card:hover { border-color: var(--accent); }
+
+.proj-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.proj-card-name {
+  font-family: var(--font-edit);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.proj-card-when {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  white-space: nowrap;
+}
+.proj-card-role {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.proj-card-blurb {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+
 .poster {
   aspect-ratio: 16 / 7;
   border-radius: 12px;
