@@ -513,14 +513,8 @@ h1.editorial,
 
 .card-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 18px;
-}
-
-@media (max-width: 720px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .poster {
