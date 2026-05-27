@@ -1,8 +1,27 @@
 import Link from "next/link";
 import Shell from "@/chrome/Shell";
 import { getProjects, getSiteConfig, getTracks } from "@/lib/data";
+import type { ProjectDTO } from "@/types";
 
 export const dynamic = "force-dynamic";
+
+function PastItem({ p }: { p: ProjectDTO }) {
+  return (
+    <div className="past-item">
+      <div className="past-head">
+        <span className="past-name">{p.name}</span>
+        <span className="past-when">{p.when}</span>
+      </div>
+      <div className="past-role">{p.role}</div>
+      <p className="past-blurb">{p.blurb}</p>
+      <div className="work-links past-links">
+        {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
+        {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+        <Link className="work-link" href={`/projects/${p.slug}`}>case →</Link>
+      </div>
+    </div>
+  );
+}
 
 export default async function ProjectsIndex() {
   const [projects, cfg, tracks] = await Promise.all([
@@ -10,55 +29,26 @@ export default async function ProjectsIndex() {
     getSiteConfig(),
     getTracks(),
   ]);
-  const tagSet = Array.from(new Set(projects.flatMap((p) => p.tags)));
 
   return (
     <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
-      <Link href="/" className="detail-back">
-        ← home
-      </Link>
       <main className="detail-shell">
+        <nav className="breadcrumb">
+          <Link href="/">home</Link>
+          <span className="breadcrumb-sep">/</span>
+          <span className="breadcrumb-current">projects</span>
+        </nav>
         <div className="cli">
           <span className="prompt">›</span> ls ~/work --all
         </div>
-        <h1 className="detail-title">every project.</h1>
+        <h1 className="detail-title">all projects.</h1>
         <p className="detail-deck">shipped, half-shipped, and the ones that taught me something.</p>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 24px" }}>
-          {tagSet.map((t) => (
-            <span key={t} className="tag">
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <div className="card-grid">
-          {projects.map((p) => (
-            <Link key={p.id} href={`/projects/${p.slug}`} className="card">
-              <div
-                style={{
-                  fontFamily: "var(--font-edit)",
-                  fontStyle: "italic",
-                  fontSize: 22,
-                }}
-              >
-                {p.name}
-              </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--ink-dim)" }}>
-                {p.role} · {p.when}
-              </div>
-              <p style={{ color: "var(--ink-soft)", fontSize: 14, margin: 0 }}>{p.blurb}</p>
-              <div className="tag-row">
-                {p.tags.map((t) => (
-                  <span key={t} className="tag">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          ))}
+        <div className="past-grid" style={{ marginTop: 32 }}>
+          {projects.map((p) => <PastItem key={p.id} p={p} />)}
         </div>
       </main>
     </Shell>
   );
 }
+

@@ -42,10 +42,14 @@ export default async function ThoughtDetail({ params }: { params: Promise<{ slug
 
   return (
     <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
-      <Link href="/thoughts" className="detail-back">
-        ← all writing
-      </Link>
       <main className="detail-shell">
+        <nav className="breadcrumb">
+          <Link href="/">home</Link>
+          <span className="breadcrumb-sep">/</span>
+          <Link href="/thoughts">writing</Link>
+          <span className="breadcrumb-sep">/</span>
+          <span className="breadcrumb-current">{t.title}</span>
+        </nav>
         <div className="cli">
           <span className="prompt">›</span> cat ~/thoughts/{t.slug}.md
         </div>

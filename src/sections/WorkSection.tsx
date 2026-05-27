@@ -3,41 +3,131 @@ import SectionIcon from "@/components/SectionIcon";
 import { getProjects } from "@/lib/data";
 import type { ProjectDTO } from "@/types";
 
-function Poster({ name }: { name: string }) {
-  const seed = name.charCodeAt(0) % 4;
+function ProjectThumb({ project }: { project: ProjectDTO }) {
+  const { slug, name } = project;
+
+  if (slug === "marsmello") {
+    return (
+      <div className="proj-thumb-wrap">
+        <svg viewBox="0 0 360 150" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0 }}>
+          <defs>
+            <radialGradient id={`rg-${slug}`} cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="var(--bg-deep)" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="360" height="150" fill="var(--bg-deep)" />
+          <rect width="360" height="150" fill={`url(#rg-${slug})`} />
+          {/* orbital rings */}
+          <ellipse cx="180" cy="75" rx="90" ry="28" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.3" />
+          <ellipse cx="180" cy="75" rx="60" ry="18" fill="none" stroke="var(--accent)" strokeWidth="0.8" opacity="0.2" />
+          {/* planet */}
+          <circle cx="180" cy="75" r="22" fill="var(--accent)" opacity="0.55" />
+          <circle cx="180" cy="75" r="22" fill="none" stroke="var(--accent)" strokeWidth="1.5" opacity="0.8" />
+          {/* small moon */}
+          <circle cx="248" cy="62" r="5" fill="var(--accent)" opacity="0.4" />
+        </svg>
+        <span className="proj-thumb-tag">./work/{slug}.app</span>
+        <span className="proj-thumb">{name}</span>
+      </div>
+    );
+  }
+
+  if (slug === "rifftrack") {
+    const bars = Array.from({ length: 42 }, (_, i) => {
+      const h = 12 + Math.abs(Math.sin(i * 0.45) * 38 + Math.cos(i * 0.3) * 18);
+      return { x: 14 + i * 8, h };
+    });
+    return (
+      <div className="proj-thumb-wrap">
+        <svg viewBox="0 0 360 150" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0 }}>
+          <defs>
+            <radialGradient id={`rg-${slug}`} cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.14" />
+              <stop offset="100%" stopColor="var(--bg-deep)" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="360" height="150" fill="var(--bg-deep)" />
+          <rect width="360" height="150" fill={`url(#rg-${slug})`} />
+          {bars.map((b, i) => (
+            <rect
+              key={i}
+              x={b.x}
+              y={75 - b.h / 2}
+              width="4"
+              height={b.h}
+              rx="2"
+              fill="var(--accent)"
+              opacity={0.18 + (i % 5) * 0.06}
+            />
+          ))}
+        </svg>
+        <span className="proj-thumb-tag">./work/{slug}.app</span>
+        <span className="proj-thumb">{name}</span>
+      </div>
+    );
+  }
+
   return (
-    <div className="poster">
-      <svg viewBox="0 0 320 140" width="100%" height="100%" preserveAspectRatio="none">
+    <div className="proj-thumb-wrap">
+      <svg viewBox="0 0 360 150" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0 }}>
         <defs>
-          <linearGradient id={`g-${name}`} x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stopColor="var(--bg-2)" />
-            <stop offset="100%" stopColor="var(--bg-deep)" />
-          </linearGradient>
+          <radialGradient id={`rg-${slug}`} cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="var(--bg-deep)" stopOpacity="0" />
+          </radialGradient>
         </defs>
-        <rect width="320" height="140" fill={`url(#g-${name})`} />
-        {Array.from({ length: 12 }).map((_, i) => (
-          <line
-            key={i}
-            x1={0}
-            x2={320}
-            y1={(i + 1) * 11 + seed}
-            y2={(i + 1) * 11 + seed}
-            stroke="var(--line-soft)"
-            strokeWidth={1}
-          />
-        ))}
-        <text
-          x={18}
-          y={36}
-          fill="var(--ink-soft)"
-          fontFamily="var(--font-edit)"
-          fontStyle="italic"
-          fontSize={26}
-        >
-          {name}
-        </text>
-        <circle cx={290} cy={110} r={14} fill="var(--accent)" opacity={0.7} />
+        <rect width="360" height="150" fill="var(--bg-deep)" />
+        <rect width="360" height="150" fill={`url(#rg-${slug})`} />
+        <circle cx="180" cy="75" r="38" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.25" />
+        <circle cx="180" cy="75" r="22" fill="none" stroke="var(--accent)" strokeWidth="1.5" opacity="0.4" />
+        <circle cx="180" cy="75" r="8" fill="var(--accent)" opacity="0.5" />
       </svg>
+      <span className="proj-thumb-tag">./work/{slug}.app</span>
+      <span className="proj-thumb">{name}</span>
+    </div>
+  );
+}
+
+function FeaturedCard({ p }: { p: ProjectDTO }) {
+  return (
+    <article className="work-card">
+      <div className="work-meta">
+        <div className="work-titleline">
+          <Link href={`/projects/${p.slug}`} className="work-name">{p.name}</Link>
+          <span className="work-when">{p.when}</span>
+        </div>
+        <div className="work-role">{p.role}</div>
+        <p className="work-blurb">{p.blurb}</p>
+        <div className="work-foot">
+          <div className="work-tags">
+            {p.tags.map((t) => <span key={t} className="proj-tag">{t}</span>)}
+          </div>
+          <div className="work-links">
+            {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
+            {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+            <Link className="work-link" href={`/projects/${p.slug}`}>case →</Link>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function PastItem({ p }: { p: ProjectDTO }) {
+  return (
+    <div className="past-item">
+      <div className="past-head">
+        <span className="past-name">{p.name}</span>
+        <span className="past-when">{p.when}</span>
+      </div>
+      <div className="past-role">{p.role}</div>
+      <p className="past-blurb">{p.blurb}</p>
+      <div className="work-links past-links">
+        {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
+        {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+        <Link className="work-link" href={`/projects/${p.slug}`}>case →</Link>
+      </div>
     </div>
   );
 }
@@ -63,61 +153,24 @@ export default async function WorkSection() {
           <p className="sec-sub">Where I spend my hours — and the small things I&apos;ve shipped alongside.</p>
         </div>
 
-        {/* Featured — single full-width card */}
         {featured && (
           <>
             <div className="label">currently shipping</div>
-            <article className="card">
-              <Poster name={featured.name} />
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                <Link href={`/projects/${featured.slug}`} style={{ fontFamily: "var(--font-edit)", fontStyle: "italic", fontSize: 22 }}>
-                  {featured.name}
-                </Link>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--ink-mute)" }}>
-                  {featured.when}
-                </span>
-              </div>
-              <div style={{ fontSize: 12.5, color: "var(--ink-dim)", fontFamily: "var(--font-mono)" }}>
-                {featured.role}
-              </div>
-              <p style={{ color: "var(--ink-soft)", fontSize: 14, margin: 0 }}>{featured.blurb}</p>
-              <div className="tag-row">
-                {featured.tags.map((t) => <span key={t} className="tag">{t}</span>)}
-              </div>
-              <div style={{ display: "flex", gap: 12, marginTop: 4 }}>
-                {featured.live && <a className="pill" href={featured.live} target="_blank" rel="noreferrer">live ↗</a>}
-                {featured.code && <a className="pill" href={featured.code} target="_blank" rel="noreferrer">code ↗</a>}
-              </div>
-            </article>
+            <FeaturedCard p={featured} />
           </>
         )}
 
-        {/* Rest — 2-col mini cards with description + links */}
         {rest.length > 0 && (
           <>
             <div className="label" style={{ marginTop: 36 }}>projects.</div>
-            <div className="proj-grid">
-              {rest.map((p) => (
-                <article key={p.id} className="proj-card">
-                  <div className="proj-card-top">
-                    <Link href={`/projects/${p.slug}`} className="proj-card-name">{p.name}</Link>
-                    <span className="proj-card-when">{p.when}</span>
-                  </div>
-                  <div className="proj-card-role">{p.role}</div>
-                  <p className="proj-card-blurb">{p.blurb}</p>
-                  <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 10, flexWrap: "wrap" as const }}>
-                    {p.live && <a className="pill" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
-                    {p.code && <a className="pill" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
-                    <Link className="pill" href={`/projects/${p.slug}`}>case →</Link>
-                  </div>
-                </article>
-              ))}
+            <div className="past-grid">
+              {rest.map((p) => <PastItem key={p.id} p={p} />)}
             </div>
           </>
         )}
 
         <div className="sec-foot">
-          <Link href="/projects">browse every project →</Link>
+          <Link href="/projects">all projects →</Link>
         </div>
       </div>
     </section>

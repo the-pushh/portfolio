@@ -1,5 +1,17 @@
 import SectionIcon from "@/components/SectionIcon";
+import PixelIcon from "@/components/PixelIcon";
+import ISTClock from "@/components/ISTClock";
 import { getSiteConfig, getSocials } from "@/lib/data";
+
+const HEART = `
+.##.##.
+#######
+#######
+.#####.
+..###..
+...#...
+`;
+
 
 export default async function ContactSection() {
   const [socials, cfg] = await Promise.all([getSocials(), getSiteConfig()]);
@@ -17,6 +29,7 @@ export default async function ContactSection() {
         <div className="sec-head">
           <h2>say hello.</h2>
           <p className="sec-sub">Email is fastest. I read everything. I usually reply within a day.</p>
+          <ISTClock />
         </div>
         <div>
           {socials.map((s, i) => (
@@ -39,9 +52,10 @@ export default async function ContactSection() {
           <a href={cfg.calUrl} target="_blank" rel="noreferrer">
             book a call ↗
           </a>
-          <span>
-            made with care in bangalore · last build {date}
-          </span>
+        </div>
+        <div className="site-credit">
+          <PixelIcon pattern={HEART} size={14} color="var(--accent)" gap={1} />
+          <span>made with care in bangalore · last build {date}</span>
         </div>
       </div>
     </section>

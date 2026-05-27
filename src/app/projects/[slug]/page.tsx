@@ -41,10 +41,14 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
 
   return (
     <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
-      <Link href="/projects" className="detail-back">
-        ← all projects
-      </Link>
       <main className="detail-shell">
+        <nav className="breadcrumb">
+          <Link href="/">home</Link>
+          <span className="breadcrumb-sep">/</span>
+          <Link href="/projects">projects</Link>
+          <span className="breadcrumb-sep">/</span>
+          <span className="breadcrumb-current">{p.name}</span>
+        </nav>
         <div className="cli">
           <span className="prompt">›</span> open ~/work/{p.slug}
         </div>

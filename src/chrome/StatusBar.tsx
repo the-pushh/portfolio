@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useScroll } from "./ScrollContext";
 import { ACCENT_PRESETS, applyAccent, loadAccent } from "@/lib/accent";
 import type { TrackDTO } from "@/types";
 
@@ -11,28 +10,25 @@ type Props = {
 };
 
 export default function StatusBar({ status, tracks }: Props) {
-  const { scrollPct } = useScroll();
-  const [now, setNow] = useState<string>("");
+  const [time, setTime] = useState<string>("");
   const [accent, setAccent] = useState<string>("#FEACD6");
   const [open, setOpen] = useState(false);
   const [trackIdx, setTrackIdx] = useState(0);
-  const popRef = useRef<HTMLDivElement | null>(null);
+  const popRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const stored = loadAccent();
-    if (stored) {
-      applyAccent(stored);
-      setAccent(stored);
-    }
+    const color = stored ?? "#FEACD6";
+    applyAccent(color);
+    setAccent(color);
   }, []);
 
   useEffect(() => {
     const tick = () => {
       const d = new Date();
-      const ist = new Date(d.getTime() + (5.5 * 60 - d.getTimezoneOffset()) * 60000);
-      const hh = String(ist.getUTCHours()).padStart(2, "0");
-      const mm = String(ist.getUTCMinutes()).padStart(2, "0");
-      setNow(`${hh}:${mm} IST`);
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+      setTime(`${hh}:${mm}`);
     };
     tick();
     const id = setInterval(tick, 30_000);
@@ -41,55 +37,54 @@ export default function StatusBar({ status, tracks }: Props) {
 
   useEffect(() => {
     if (tracks.length === 0) return;
-    const id = setInterval(() => {
-      setTrackIdx((i) => (i + 1) % tracks.length);
-    }, 8000);
+    const id = setInterval(() => setTrackIdx((i) => (i + 1) % tracks.length), 8000);
     return () => clearInterval(id);
   }, [tracks.length]);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      if (!popRef.current) return;
-      if (!popRef.current.contains(e.target as Node)) setOpen(false);
+      if (!popRef.current?.contains(e.target as Node)) setOpen(false);
     };
     if (open) document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
 
-  function pick(c: string) {
-    applyAccent(c);
-    setAccent(c);
-  }
+  function pick(c: string) { applyAccent(c); setAccent(c); }
 
   const track = tracks[trackIdx];
 
   return (
     <div className="statusbar">
-      <div className="col-left">
+      <div className="sb-left">
         <a href="#connect" className="status-pill">
           <span className="dot" />
           <span>{status}</span>
         </a>
       </div>
-      <div className="col-center" ref={popRef}>
-        <span>{now}</span>
+
+      <div className="sb-right">
+        {track && (
+          <>
+            <span className="sb-item">
+              <span className="wave">
+                <span /><span /><span /><span />
+              </span>
+              <span className="sb-track">{track.artist} — {track.title}</span>
+            </span>
+            <span className="sb-sep" />
+          </>
+        )}
+
         <button
-          className="pill"
+          ref={popRef}
+          className="sb-btn"
           aria-label="change accent"
           onClick={() => setOpen((v) => !v)}
           style={{ position: "relative" }}
         >
-          <span
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              background: "var(--accent)",
-              display: "inline-block",
-            }}
-          />
+          <span className="sb-swatch" style={{ background: accent }} />
           accent
-          {open ? (
+          {open && (
             <div className="popover" onClick={(e) => e.stopPropagation()}>
               <div className="swatches">
                 {ACCENT_PRESETS.map((c) => (
@@ -106,37 +101,21 @@ export default function StatusBar({ status, tracks }: Props) {
                 type="color"
                 value={accent}
                 onChange={(e) => pick(e.target.value)}
-                style={{
-                  width: "100%",
-                  height: 28,
-                  border: "1px solid var(--line)",
-                  borderRadius: 6,
-                  background: "transparent",
-                }}
+                style={{ width: "100%", height: 28, border: "1px solid var(--line)", borderRadius: 6, background: "transparent" }}
               />
             </div>
-          ) : null}
+          )}
         </button>
-        <a href="/v1/" className="pill" title="View v1 portfolio" target="_blank" rel="noopener noreferrer">
+
+        <span className="sb-sep" />
+
+        <a href="/v1/" className="sb-item sb-btn" title="View v1 portfolio" target="_blank" rel="noopener noreferrer">
           v1 ↗
         </a>
-      </div>
-      <div className="col-right">
-        {track ? (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-            <span className="wave">
-              <span />
-              <span />
-              <span />
-              <span />
-            </span>
-            <span style={{ color: "var(--ink-soft)" }}>
-              {track.artist} — {track.title}
-            </span>
-            <span style={{ color: "var(--ink-mute)" }}>{track.len}</span>
-          </span>
-        ) : null}
-        <span>{Math.round(scrollPct)}%</span>
+
+        <span className="sb-sep" />
+
+        <span className="sb-item sb-time">{time}</span>
       </div>
     </div>
   );

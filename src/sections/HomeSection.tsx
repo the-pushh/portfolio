@@ -26,8 +26,8 @@ export default async function HomeSection() {
         </div>
         <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
           <span className="dot" />
-          <a href="#connect" style={{ color: "var(--ink)", borderBottom: "1px solid var(--accent-line)" }}>
-            {cfg.status}
+          <a href="#connect" style={{ color: "var(--accent)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.04em" }}>
+            {cfg.status} →
           </a>
         </div>
       </div>
