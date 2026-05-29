@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 type Playlist = { id: string; spotifyId: string; name: string; isDefault: boolean };
 
@@ -15,8 +15,6 @@ interface SpotifyIFrameAPI {
 interface SpotifyController {
   play(): void;
   pause(): void;
-  nextTrack(): void;
-  previousTrack(): void;
   togglePlay(): void;
   loadUri(uri: string): void;
   addListener(ev: string, cb: (e: unknown) => void): void;
@@ -27,52 +25,24 @@ export default function SpotifyWidget() {
   const [plIdx, setPlIdx] = useState(0);
   const [popOpen, setPopOpen] = useState(false);
   const [popClosing, setPopClosing] = useState(false);
-  const [popRect, setPopRect] = useState<{ centerX: number } | null>(null);
+  const [popCenterX, setPopCenterX] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
-  const [everOpened, setEverOpened] = useState(false);
-  const [initStarted, setInitStarted] = useState(false);
 
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLDivElement | null>(null);
   const controllerRef = useRef<SpotifyController | null>(null);
   const apiRef = useRef<SpotifyIFrameAPI | null>(null);
+  const playlistsRef = useRef<Playlist[]>([]);
+  const plIdxRef = useRef(0);
   const initDone = useRef(false);
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeAnimTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /* load Spotify iFrame API */
-  useEffect(() => {
-    window.onSpotifyIframeApiReady = (api) => {
-      apiRef.current = api;
-    };
-    if (!document.getElementById("spotify-iframe-api")) {
-      const s = document.createElement("script");
-      s.id = "spotify-iframe-api";
-      s.src = "https://open.spotify.com/embed/iframe-api/v1";
-      s.async = true;
-      document.body.appendChild(s);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /* fetch playlists */
-  useEffect(() => {
-    fetch("/api/spotify/playlists")
-      .then((r) => r.json())
-      .then((data: Playlist[]) => {
-        setPlaylists(data);
-        const di = data.findIndex((p) => p.isDefault);
-        setPlIdx(di >= 0 ? di : 0);
-      })
-      .catch(() => {});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function tryInit(spotifyId: string) {
-    if (initDone.current || !apiRef.current || !iframeRef.current) return;
+  function tryInit() {
+    if (initDone.current || !apiRef.current || !iframeRef.current || playlistsRef.current.length === 0) return;
     initDone.current = true;
-    setInitStarted(true);
+    const spotifyId = playlistsRef.current[plIdxRef.current]?.spotifyId ?? "";
     apiRef.current.createController(
       iframeRef.current,
       { uri: `spotify:playlist:${spotifyId}`, width: "100%", height: 152 },
@@ -89,13 +59,51 @@ export default function SpotifyWidget() {
     );
   }
 
-  if (playlists.length === 0) return null;
+  /* load Spotify iFrame API — call tryInit when ready */
+  useEffect(() => {
+    window.onSpotifyIframeApiReady = (api) => {
+      apiRef.current = api;
+      tryInit();
+    };
+    if (!document.getElementById("spotify-iframe-api")) {
+      const s = document.createElement("script");
+      s.id = "spotify-iframe-api";
+      s.src = "https://open.spotify.com/embed/iframe-api/v1";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const pl = playlists[plIdx];
+  /* fetch playlists — call tryInit when ready */
+  useEffect(() => {
+    fetch("/api/spotify/playlists")
+      .then((r) => r.json())
+      .then((data: Playlist[]) => {
+        const di = data.findIndex((p) => p.isDefault);
+        const idx = di >= 0 ? di : 0;
+        playlistsRef.current = data;
+        plIdxRef.current = idx;
+        setPlaylists(data);
+        setPlIdx(idx);
+        tryInit();
+      })
+      .catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* compute popup position after mount */
+  useLayoutEffect(() => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setPopCenterX(rect.left + rect.width / 2);
+    }
+  }, []);
 
   function switchPlaylist(idx: number) {
     setPlIdx(idx);
-    const target = playlists[idx];
+    plIdxRef.current = idx;
+    const target = playlistsRef.current[idx];
     if (!target || !controllerRef.current) return;
     controllerRef.current.loadUri(`spotify:playlist:${target.spotifyId}`);
     controllerRef.current.play();
@@ -107,12 +115,9 @@ export default function SpotifyWidget() {
     setPopClosing(false);
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      setPopRect({ centerX: rect.left + rect.width / 2 });
+      setPopCenterX(rect.left + rect.width / 2);
     }
-    setEverOpened(true);
     setPopOpen(true);
-    /* init controller after render tick so iframeRef is mounted */
-    setTimeout(() => tryInit(playlists[plIdx]?.spotifyId ?? ""), 50);
   }
 
   function closePop() {
@@ -125,14 +130,22 @@ export default function SpotifyWidget() {
     }, 150);
   }
 
+  if (playlists.length === 0) return null;
+
+  const pl = playlists[plIdx];
   const visible = popOpen || popClosing;
 
   return (
     <>
       <span className="sb-item now-playing">
-        <button className="sb-btn mute-btn" style={{ width: 28, padding: "0 6px" }} aria-label={isPlaying ? "pause" : "play"}
-          onClick={() => initStarted ? controllerRef.current?.togglePlay() : openPop()} disabled={initStarted && !playerReady}>
-          {initStarted && !playerReady
+        <button
+          className="sb-btn mute-btn"
+          style={{ width: 28, padding: "0 6px" }}
+          aria-label={isPlaying ? "pause" : "play"}
+          onClick={() => controllerRef.current?.togglePlay()}
+          disabled={!playerReady}
+        >
+          {!playerReady
             ? <span className="sp-loader" />
             : isPlaying
               ? <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>
@@ -173,38 +186,35 @@ export default function SpotifyWidget() {
         </div>
       </span>
 
-      {/* Popup — stays in DOM after first open so iframe keeps playing */}
-      {everOpened && popRect && (
-        <div
-          className={`music-popover-fixed${popClosing ? " closing" : ""}`}
-          style={{
-            left: popRect.centerX,
-            transform: "translateX(-50%)",
-            visibility: visible ? "visible" : "hidden",
-            pointerEvents: visible ? "auto" : "none",
-          }}
-          onMouseEnter={openPop}
-          onMouseLeave={closePop}
-        >
-          <div className="music-popover-label" style={{ marginBottom: 6 }}>
-            pushkar&apos;s curated playlists
-          </div>
-          {/* iframe div — always mounted once everOpened, controller lives here */}
-          {!playerReady && <div className="sp-skeleton" style={{ height: 152, borderRadius: 8 }} />}
-          <div ref={iframeRef} style={{ borderRadius: 8, overflow: "hidden", display: playerReady ? "block" : "none" }} />
-          <div className="music-popover-label" style={{ marginTop: 10 }}>switch playlist</div>
-          {playlists.map((p, i) => (
-            <button
-              key={p.id}
-              className={`music-pl-item${i === plIdx ? " active" : ""}`}
-              onClick={() => switchPlaylist(i)}
-            >
-              <span>{p.name}</span>
-              {i === plIdx && <span className="np-now">now playing</span>}
-            </button>
-          ))}
+      {/* Popup — always in DOM so iframe stays mounted and audio continues */}
+      <div
+        className={`music-popover-fixed${popClosing ? " closing" : ""}`}
+        style={{
+          left: popCenterX,
+          transform: "translateX(-50%)",
+          visibility: visible ? "visible" : "hidden",
+          pointerEvents: visible ? "auto" : "none",
+        }}
+        onMouseEnter={openPop}
+        onMouseLeave={closePop}
+      >
+        <div className="music-popover-label" style={{ marginBottom: 6 }}>
+          pushkar&apos;s curated playlists
         </div>
-      )}
+        {!playerReady && <div className="sp-skeleton" style={{ height: 152, borderRadius: 8 }} />}
+        <div ref={iframeRef} style={{ borderRadius: 8, overflow: "hidden", display: playerReady ? "block" : "none" }} />
+        <div className="music-popover-label" style={{ marginTop: 10 }}>switch playlist</div>
+        {playlists.map((p, i) => (
+          <button
+            key={p.id}
+            className={`music-pl-item${i === plIdx ? " active" : ""}`}
+            onClick={() => switchPlaylist(i)}
+          >
+            <span>{p.name}</span>
+            {i === plIdx && <span className="np-now">now playing</span>}
+          </button>
+        ))}
+      </div>
     </>
   );
 }
