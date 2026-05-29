@@ -72,11 +72,14 @@ export default function SpotifyWidget() {
       s.async = true;
       document.body.appendChild(s);
     }
-    /* poll in case script already loaded before callback was registered */
+    /* poll until API, iframe div, and playlists are all ready */
     const poll = setInterval(() => {
-      if (apiRef.current) { clearInterval(poll); tryInit(); }
+      if (apiRef.current && iframeRef.current && playlistsRef.current.length > 0) {
+        clearInterval(poll);
+        tryInit();
+      }
     }, 200);
-    const timeout = setTimeout(() => clearInterval(poll), 10000);
+    const timeout = setTimeout(() => clearInterval(poll), 15000);
     return () => { clearInterval(poll); clearTimeout(timeout); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
