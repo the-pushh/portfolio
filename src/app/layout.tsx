@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { DM_Sans, JetBrains_Mono, Instrument_Serif } from "next/font/google";
+import AnimatedTitle from "@/components/AnimatedTitle";
 
 const inter = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const jb = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
@@ -12,14 +13,20 @@ const instr = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Pushkar Borkar — Generalist Engineer",
-  description: "Portfolio of Pushkar Borkar (a.k.a. ThePushh) — designer-developer based in Bangalore.",
+  title: "The Pushh",
+  description: "Pushkar's Portfolio",
+  icons: {
+    icon: "/icons/home.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jb.variable} ${instr.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AnimatedTitle />
+        {children}
+      </body>
     </html>
   );
 }
