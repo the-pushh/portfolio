@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Shell from "@/chrome/Shell";
-import { getProjectBySlug, getProjects, getSiteConfig, getTracks } from "@/lib/data";
+import { getProjectBySlug, getProjects, getSiteConfig } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -28,19 +28,14 @@ function mdToHtml(md: string): string {
 
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [p, all, cfg, tracks] = await Promise.all([
-    getProjectBySlug(slug),
-    getProjects(),
-    getSiteConfig(),
-    getTracks(),
-  ]);
+  const [p, all, cfg] = await Promise.all([getProjectBySlug(slug), getProjects(), getSiteConfig()]);
   if (!p) return notFound();
   const i = all.findIndex((x) => x.slug === slug);
   const prev = i > 0 ? all[i - 1] : null;
   const next = i >= 0 && i < all.length - 1 ? all[i + 1] : null;
 
   return (
-    <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
+    <Shell status={cfg.status} calUrl={cfg.calUrl} email={cfg.email} showLeftRail={false}>
       <main className="detail-shell">
         <nav className="breadcrumb">
           <Link href="/">home</Link>

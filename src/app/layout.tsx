@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Instrument_Serif } from "next/font/google";
+import { DM_Sans, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+const inter = DM_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const jb = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 const instr = Instrument_Serif({
   subsets: ["latin"],

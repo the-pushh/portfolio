@@ -54,174 +54,121 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
   });
 
   // ---------- Thoughts ----------
-  const thoughts = [
-    {
-      slug: "on-building-things-you-dont-fully-understand",
-      title: "On building things you don't fully understand",
-      excerpt:
-        "A long note on web3, half-knowledge, and the strange comfort of shipping anyway.",
-      tags: ["web3", "engineering", "longread"],
-      date: "May 02, 2026",
-      readTime: "11 min",
-      featured: true,
-    },
-    {
-      slug: "the-composer-is-a-state-machine",
-      title: "The composer is a state machine",
-      excerpt:
-        "Why music software is just UX with extra steps — and why that's hopeful.",
-      tags: ["music-tech", "engineering"],
-      date: "Apr 18, 2026",
-      readTime: "7 min",
-      featured: false,
-    },
-    {
-      slug: "latency-is-a-feeling-not-a-number",
-      title: "Latency is a feeling, not a number",
-      excerpt: "Small notes on perceived speed, optimistic UI, and trust.",
-      tags: ["ux", "frontend"],
-      date: "Apr 02, 2026",
-      readTime: "5 min",
-      featured: false,
-    },
-    {
-      slug: "reading-the-room-design-systems-as-social-contracts",
-      title: "Reading the room: design systems as social contracts",
-      excerpt: "Systems work because people agree, not because Figma says so.",
-      tags: ["design", "systems"],
-      date: "Feb 24, 2026",
-      readTime: "8 min",
-      featured: false,
-    },
-    {
-      slug: "i-rewrote-my-portfolio-for-the-seventh-time",
-      title: "I rewrote my portfolio for the seventh time",
-      excerpt: "Notes from another rebuild. Editorial, dark, single accent.",
-      tags: ["design", "meta"],
-      date: "Mar 11, 2026",
-      readTime: "4 min",
-      featured: false,
-    },
-  ];
+  await prisma.thought.deleteMany({});
 
-  for (const t of thoughts) {
-    await prisma.thought.upsert({
-      where: { slug: t.slug },
-      update: {
-        title: t.title,
-        excerpt: t.excerpt,
-        tags: JSON.stringify(t.tags),
-        date: t.date,
-        readTime: t.readTime,
-        featured: t.featured,
-      },
-      create: {
-        slug: t.slug,
-        title: t.title,
-        excerpt: t.excerpt,
-        content: "",
-        tags: JSON.stringify(t.tags),
-        date: t.date,
-        readTime: t.readTime,
-        featured: t.featured,
-        published: true,
-      },
-    });
-  }
-
-  // ---------- Projects ----------
+  // ---------- Projects (work = experiences + projects from v1) ----------
   const projects = [
-    {
-      slug: "marsmello",
-      name: "Marsmello",
-      role: "Design + Web3 Engineer",
-      when: "2024 — Present",
-      blurb:
-        "Decentralised Mars colonisation game. Designing the v2 economy and shipping the player-facing dashboard.",
-      tags: ["web3", "game", "react", "design-system", "ethers.js"],
-      live: "https://marsmello.example",
-      code: "https://github.com/Pushkar1809/marsmello",
-      current: true,
-      order: 0,
-    },
-    {
-      slug: "rifftrack",
-      name: "Rifftrack",
-      role: "Solo · Design + Engineering",
-      when: "2026",
-      blurb:
-        "A small DAW-ish thing for laying down ideas fast. Webaudio, react, a stubborn pursuit of low latency.",
-      tags: ["music", "webaudio", "react", "node"],
-      live: "https://rifftrack.example",
-      code: "https://github.com/Pushkar1809/rifftrack",
-      current: true,
-      order: 1,
-    },
-    {
-      slug: "stanza",
-      name: "Stanza",
-      role: "Solo, Design + Code",
-      when: "2025",
-      blurb: "A quiet writing tool for poetry. Drafts, line-breaks, and a little restraint.",
-      tags: ["writing", "react"],
-      live: "",
-      code: "",
-      current: false,
-      order: 2,
-    },
-    {
-      slug: "slowmail",
-      name: "Slowmail",
-      role: "Solo, Full Stack",
-      when: "2024",
-      blurb: "Letters that arrive when you mean them to.",
-      tags: ["fullstack", "next.js"],
-      live: "",
-      code: "",
-      current: false,
-      order: 3,
-    },
+    // experiences
     {
       slug: "foliox",
       name: "folioX",
+      role: "Lead Software Engineer",
+      when: "Dec 2023 — Present",
+      blurb: "Built web3 portfolio management software with liquid staking and liquidity pools. Designed and developed landing pages with motion graphics. Set up company-wide design system and code infrastructure.",
+      tags: ["React", "Next.js", "Wagmi", "Ethers.js", "Tailwind", "Radix"],
+      live: "https://www.foliox.io/",
+      code: "",
+      current: true,
+      kind: "experience",
+      order: 7,
+    },
+    {
+      slug: "liquid-staking-aggregator",
+      name: "Liquid Staking Aggregator",
       role: "Full Stack Developer",
-      when: "2023–24",
-      blurb: "Rebuilt the publishing pipeline. Cut latency, kept the editorial.",
-      tags: ["fullstack", "publishing"],
-      live: "",
+      when: "Nov 2023",
+      blurb: "Dapp enabling ETH staking to Lido and Stader from a unified UI — aggregates staking across both platforms.",
+      tags: ["React", "Ethers.js", "Solidity", "Styled-components"],
+      live: "https://lst-agg.vercel.app/",
+      code: "https://github.com/Pushkar1809/Liquid-Staking-Agg",
+      current: false,
+      kind: "project",
+      order: 6,
+    },
+    {
+      slug: "ngram",
+      name: "ngram",
+      role: "SDE Intern",
+      when: "Jan 2023 — Aug 2023",
+      blurb: "Boosted SEO through strategic nested sitemaps. Implemented rate limiting and role-based subscriptions. Leveraged Large Language Models for data extraction and structuring.",
+      tags: ["React", "Next.js", "Flask", "Python", "OpenAI API"],
+      live: "https://www.ngram.com/",
       code: "",
       current: false,
+      kind: "experience",
+      order: 5,
+    },
+    {
+      slug: "panda-wallet",
+      name: "Panda Wallet",
+      role: "Full Stack Developer",
+      when: "Dec 2022",
+      blurb: "User-friendly Web3 wallet abstracting private keys with smart contracts, offering guardian wallets for easy recovery.",
+      tags: ["React", "ethers.js", "ChakraUI", "EIP 4337"],
+      live: "",
+      code: "https://github.com/dark-circles-2022/panda-wallet",
+      current: false,
+      kind: "project",
       order: 4,
     },
     {
-      slug: "fintech-dashboards",
-      name: "Fintech Dashboards",
-      role: "Freelance Frontend",
-      when: "2024–25",
-      blurb: "Three dashboards for three fintechs. Live data, calm interfaces.",
-      tags: ["frontend", "freelance"],
+      slug: "onboard-studio",
+      name: "OnboardStudioOü",
+      role: "Founding Software Developer",
+      when: "Mar 2022 — Oct 2022",
+      blurb: "Developed a DAO members management hub with React client and Node.js API integrated with MongoDB. Spearheaded deployment on cPanel and Linux servers. Secured $20,000 in grants to fund startup operations.",
+      tags: ["React", "Node.js", "Express.js", "Ethers.js", "MongoDB", "Linux"],
       live: "",
       code: "",
       current: false,
-      order: 5,
+      kind: "experience",
+      order: 3,
+    },
+    {
+      slug: "nuance",
+      name: "Nuance Communications",
+      role: "SDE Intern",
+      when: "May 2022 — Jul 2022",
+      blurb: "Contributed to a physicians report builder using speech-to-text models. Reverse-engineered application code to create design documentation for onboarding. Established best practices for Git, TDD, and Agile.",
+      tags: ["React", "Ruby on Rails", "MySQL", "Redis", "JIRA"],
+      live: "https://www.nuance.com/",
+      code: "",
+      current: false,
+      kind: "experience",
+      order: 2,
+    },
+    {
+      slug: "shatranj",
+      name: "Shatranj",
+      role: "Full Stack Developer",
+      when: "Nov 2021",
+      blurb: "Chess dapp merging chess legacy with Web3 — rewarding winners with unique, artsy chess NFTs for customization.",
+      tags: ["React", "chess.js", "moralis", "infura", "ERC721"],
+      live: "",
+      code: "https://github.com/GHODA-crypto/shatranj",
+      current: false,
+      kind: "project",
+      order: 1,
+    },
+    {
+      slug: "marsmello",
+      name: "Marsmello",
+      role: "Web3 Engineer",
+      when: "Aug 2021",
+      blurb: "Decentralized Mars colonization game blending idle, open-world, strategy, economy, and simulation — a unique Web3 experience.",
+      tags: ["React", "web3.js", "NFT", "Polygon", "React Spring"],
+      live: "https://marsmello.netlify.app/",
+      code: "https://github.com/jayeshbhole/MarsMello",
+      current: false,
+      kind: "project",
+      order: 0,
     },
   ];
 
+  await prisma.project.deleteMany({});
   for (const p of projects) {
-    await prisma.project.upsert({
-      where: { slug: p.slug },
-      update: {
-        name: p.name,
-        role: p.role,
-        when: p.when,
-        blurb: p.blurb,
-        tags: JSON.stringify(p.tags),
-        live: p.live,
-        code: p.code,
-        current: p.current,
-        order: p.order,
-      },
-      create: {
+    await prisma.project.create({
+      data: {
         slug: p.slug,
         name: p.name,
         role: p.role,
@@ -232,6 +179,7 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
         live: p.live,
         code: p.code,
         current: p.current,
+        kind: p.kind,
         order: p.order,
       },
     });
@@ -239,12 +187,12 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
 
   // ---------- Toolbox ----------
   const toolboxData = [
-    { name: "Frontend", items: ["Javascript", "Typescript", "React", "Vue"] },
-    { name: "Frameworks", items: ["Next.js", "Astro", "Remix", "Vite", "Tailwind"] },
+    { name: "Frontend", items: ["Javascript", "Typescript", "React", "Next.js", "TailwindCSS", "React-Native"] },
     { name: "Backend", items: ["Python", "Flask", "Node.js", "Express.js"] },
-    { name: "Databases", items: ["MongoDB", "MySQL", "SQL", "Redis"] },
-    { name: "Web3", items: ["ethers.js", "wagmi", "viem", "Foundry"] },
-    { name: "Tools", items: ["Vercel", "Figma", "Git", "Docker", "Linear"] },
+    { name: "Database", items: ["MongoDB", "SQL", "MySQL", "Redis"] },
+    { name: "Web3", items: ["ethers.js", "wagmi"] },
+    { name: "Misc", items: ["Vercel", "Git", "Figma"] },
+    { name: "Frameworks", items: ["Electron", "Supabase"] },
   ];
   await prisma.toolboxCategory.deleteMany({});
   for (let i = 0; i < toolboxData.length; i++) {
@@ -254,32 +202,14 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
     });
   }
 
-  // ---------- Tracks ----------
-  const tracks = [
-    { artist: "Khruangbin", title: "Maria Tambien", len: "5:13" },
-    { artist: "Bon Iver", title: "Holocene", len: "5:36" },
-    { artist: "Ravi Shankar", title: "Raga Jog", len: "8:42" },
-    { artist: "Mac DeMarco", title: "Chamber of Reflection", len: "4:48" },
-    { artist: "Tame Impala", title: "Let It Happen", len: "7:47" },
-    { artist: "Nils Frahm", title: "Says", len: "8:18" },
-    { artist: "Arooj Aftab", title: "Mohabbat", len: "6:50" },
-    { artist: "Floating Points", title: "Birth", len: "5:51" },
-    { artist: "Pushkar (demo)", title: "Bangalore, 4am", len: "3:42" },
-  ];
-  await prisma.track.deleteMany({});
-  for (let i = 0; i < tracks.length; i++) {
-    await prisma.track.create({ data: { ...tracks[i], order: i } });
-  }
-
   // ---------- Socials ----------
   const socials = [
     { key: "Github", val: "@Pushkar1809", href: "https://github.com/Pushkar1809" },
-    { key: "LinkedIn", val: "/in/pushkar-borkar", href: "https://linkedin.com/in/pushkar-borkar" },
-    { key: "Twitter/X", val: "@0xPushkr", href: "https://x.com/0xPushkr" },
-    { key: "Resume", val: "/resume", href: "/resume" },
-    { key: "Mail", val: "thepushh@gmail.com", href: "mailto:thepushh@gmail.com" },
-    { key: "Twitch", val: "@pushkarborkar", href: "https://twitch.tv/pushkarborkar" },
-    { key: "Instagram", val: "@champagnebappi", href: "https://instagram.com/champagnebappi" },
+    { key: "LinkedIn", val: "/in/pushkar-borkar", href: "https://www.linkedin.com/in/pushkar-borkar" },
+    { key: "Twitter/X", val: "@0xPushkr", href: "https://twitter.com/0xpushkr" },
+    { key: "Email", val: "pushkarborkar1809@gmail.com", href: "mailto:pushkarborkar1809@gmail.com" },
+    { key: "Twitch", val: "@pushkarborkar", href: "https://www.twitch.tv/pushkarborkar" },
+    { key: "Instagram", val: "@champagnebappi", href: "https://www.instagram.com/champagnebappi/" },
   ];
   await prisma.social.deleteMany({});
   for (let i = 0; i < socials.length; i++) {

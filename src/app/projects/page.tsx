@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Shell from "@/chrome/Shell";
-import { getProjects, getSiteConfig, getTracks } from "@/lib/data";
+import { getProjects, getSiteConfig } from "@/lib/data";
 import type { ProjectDTO } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -17,21 +17,16 @@ function PastItem({ p }: { p: ProjectDTO }) {
       <div className="work-links past-links">
         {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
         {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
-        <Link className="work-link" href={`/projects/${p.slug}`}>case →</Link>
       </div>
     </div>
   );
 }
 
 export default async function ProjectsIndex() {
-  const [projects, cfg, tracks] = await Promise.all([
-    getProjects(),
-    getSiteConfig(),
-    getTracks(),
-  ]);
+  const [projects, cfg] = await Promise.all([getProjects(), getSiteConfig()]);
 
   return (
-    <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
+    <Shell status={cfg.status} calUrl={cfg.calUrl} email={cfg.email} showLeftRail={false}>
       <main className="detail-shell">
         <nav className="breadcrumb">
           <Link href="/">home</Link>

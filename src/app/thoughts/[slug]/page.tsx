@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Shell from "@/chrome/Shell";
-import { getSiteConfig, getThoughtBySlug, getThoughts, getTracks } from "@/lib/data";
+import { getSiteConfig, getThoughtBySlug, getThoughts } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -29,19 +29,14 @@ function mdToHtml(md: string): string {
 
 export default async function ThoughtDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [t, all, cfg, tracks] = await Promise.all([
-    getThoughtBySlug(slug),
-    getThoughts(),
-    getSiteConfig(),
-    getTracks(),
-  ]);
+  const [t, all, cfg] = await Promise.all([getThoughtBySlug(slug), getThoughts(), getSiteConfig()]);
   if (!t) return notFound();
   const i = all.findIndex((x) => x.slug === slug);
   const prev = i > 0 ? all[i - 1] : null;
   const next = i >= 0 && i < all.length - 1 ? all[i + 1] : null;
 
   return (
-    <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
+    <Shell status={cfg.status} calUrl={cfg.calUrl} email={cfg.email} showLeftRail={false}>
       <main className="detail-shell">
         <nav className="breadcrumb">
           <Link href="/">home</Link>

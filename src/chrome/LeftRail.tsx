@@ -2,20 +2,23 @@
 
 import { useScroll } from "./ScrollContext";
 
-const ITEMS = [
-  { id: "home", label: "home", k: "⌘1" },
-  { id: "work", label: "work", k: "⌘2" },
-  { id: "toolbox", label: "toolbox", k: "⌘3" },
-  { id: "thoughts", label: "thoughts", k: "⌘4" },
-  { id: "connect", label: "connect", k: "⌘5" },
+const BASE_ITEMS = [
+  { id: "home", label: "home" },
+  { id: "work", label: "work" },
+  { id: "toolbox", label: "toolbox" },
+  { id: "thoughts", label: "thoughts" },
+  { id: "connect", label: "connect" },
 ];
 
-export default function LeftRail() {
+export default function LeftRail({ hasThoughts = true }: { hasThoughts?: boolean }) {
   const { active, scrollPct } = useScroll();
+  const items = BASE_ITEMS
+    .filter((i) => i.id !== "thoughts" || hasThoughts)
+    .map((i, idx) => ({ ...i, k: `⌘${idx + 1}` }));
 
   return (
     <nav className="leftrail" aria-label="section navigation">
-      {ITEMS.map((it) => (
+      {items.map((it) => (
         <a key={it.id} href={`#${it.id}`} className={active === it.id ? "active" : ""}>
           <span>{it.label}</span>
           <span className="kbd">{it.k}</span>

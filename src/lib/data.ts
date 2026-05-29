@@ -1,11 +1,12 @@
 import { prisma } from "./db";
+import { fetchPlaylist, getUserToken } from "./spotify";
 import type {
   ProjectDTO,
   SiteConfigDTO,
   SocialDTO,
+  SpotifyPlaylistDTO,
   ThoughtDTO,
   ToolboxCategoryDTO,
-  TrackDTO,
 } from "@/types";
 
 function safeJSON<T>(s: string, fallback: T): T {
@@ -70,7 +71,7 @@ export async function getThoughtById(id: string): Promise<ThoughtDTO | null> {
 }
 
 export async function getProjects(): Promise<ProjectDTO[]> {
-  const rows = await prisma.project.findMany({ orderBy: [{ current: "desc" }, { order: "asc" }] });
+  const rows = await prisma.project.findMany({ orderBy: { order: "desc" } });
   return rows.map((r) => ({
     id: r.id,
     slug: r.slug,
@@ -83,6 +84,7 @@ export async function getProjects(): Promise<ProjectDTO[]> {
     live: r.live,
     code: r.code,
     current: r.current,
+    kind: r.kind,
     order: r.order,
   }));
 }
@@ -102,6 +104,7 @@ export async function getProjectBySlug(slug: string): Promise<ProjectDTO | null>
     live: r.live,
     code: r.code,
     current: r.current,
+    kind: r.kind,
     order: r.order,
   };
 }
@@ -121,6 +124,7 @@ export async function getProjectById(id: string): Promise<ProjectDTO | null> {
     live: r.live,
     code: r.code,
     current: r.current,
+    kind: r.kind,
     order: r.order,
   };
 }
@@ -130,15 +134,25 @@ export async function getSocials(): Promise<SocialDTO[]> {
   return rows.map((r) => ({ id: r.id, key: r.key, val: r.val, href: r.href, order: r.order }));
 }
 
-export async function getTracks(): Promise<TrackDTO[]> {
-  const rows = await prisma.track.findMany({ orderBy: { order: "asc" } });
-  return rows.map((r) => ({
-    id: r.id,
-    artist: r.artist,
-    title: r.title,
-    len: r.len,
-    order: r.order,
-  }));
+export async function getSpotifyPlaylists(): Promise<SpotifyPlaylistDTO[]> {
+  const rows = await prisma.spotifyPlaylist.findMany({ orderBy: { order: "asc" } });
+  if (rows.length === 0) return [];
+  const config = await prisma.siteConfig.findUnique({ where: { id: "singleton" }, select: { spotifyRefreshToken: true } });
+  const userToken = config?.spotifyRefreshToken ? await getUserToken(config.spotifyRefreshToken) : null;
+  const results = await Promise.all(
+    rows.map(async (row) => {
+      const data = await fetchPlaylist(row.spotifyId, userToken ?? undefined);
+      return {
+        id: row.id,
+        spotifyId: row.spotifyId,
+        name: data?.name ?? row.name,
+        coverUrl: data?.coverUrl ?? null,
+        isDefault: row.isDefault,
+        tracks: data?.tracks ?? [],
+      };
+    })
+  );
+  return results;
 }
 
 export async function getToolbox(): Promise<ToolboxCategoryDTO[]> {

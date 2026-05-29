@@ -34,6 +34,7 @@ model Project {
   live      String   @default("")
   code      String   @default("")
   current   Boolean  @default(false)
+  kind      String   @default("project")
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -47,12 +48,12 @@ model Social {
   order Int    @default(0)
 }
 
-model Track {
-  id     String @id @default(cuid())
-  artist String
-  title  String
-  len    String
-  order  Int    @default(0)
+model SpotifyPlaylist {
+  id        String  @id @default(cuid())
+  spotifyId String  @unique
+  name      String
+  isDefault Boolean @default(false)
+  order     Int     @default(0)
 }
 
 model ToolboxCategory {
@@ -73,6 +74,7 @@ model SiteConfig {
   bio       String @default("")
   about     String @default("")
   email     String @default("thepushh@gmail.com")
-  resumeUrl String @default("/resume")
-  calUrl    String @default("https://cal.com/pushkar")
+  resumeUrl            String @default("/resume")
+  calUrl               String @default("https://cal.com/pushkar")
+  spotifyRefreshToken  String @default("")
 }

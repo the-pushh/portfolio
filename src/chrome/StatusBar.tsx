@@ -2,18 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ACCENT_PRESETS, applyAccent, loadAccent } from "@/lib/accent";
-import type { TrackDTO } from "@/types";
+import SpotifyWidget from "./SpotifyWidget";
 
 type Props = {
   status: string;
-  tracks: TrackDTO[];
+  calUrl: string;
+  email: string;
 };
 
-export default function StatusBar({ status, tracks }: Props) {
+export default function StatusBar({ status, calUrl, email }: Props) {
   const [time, setTime] = useState<string>("");
   const [accent, setAccent] = useState<string>("#FEACD6");
   const [open, setOpen] = useState(false);
-  const [trackIdx, setTrackIdx] = useState(0);
+  const [copied, setCopied] = useState(false);
   const popRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -36,12 +37,6 @@ export default function StatusBar({ status, tracks }: Props) {
   }, []);
 
   useEffect(() => {
-    if (tracks.length === 0) return;
-    const id = setInterval(() => setTrackIdx((i) => (i + 1) % tracks.length), 8000);
-    return () => clearInterval(id);
-  }, [tracks.length]);
-
-  useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (!popRef.current?.contains(e.target as Node)) setOpen(false);
     };
@@ -51,29 +46,39 @@ export default function StatusBar({ status, tracks }: Props) {
 
   function pick(c: string) { applyAccent(c); setAccent(c); }
 
-  const track = tracks[trackIdx];
+  function copyEmail() {
+    navigator.clipboard.writeText(email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
 
   return (
     <div className="statusbar">
       <div className="sb-left">
-        <a href="#connect" className="status-pill">
+        <a href={calUrl} target="_blank" rel="noreferrer" className="sb-btn sb-item">
           <span className="dot" />
-          <span>{status}</span>
+          {status}
+          <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 8L8 2M8 2H4M8 2v4"/></svg>
         </a>
+        <span className="sb-sep" />
+        <a href="/resume" target="_blank" rel="noreferrer" className="sb-btn sb-item">
+          resume
+          <svg width="8" height="8" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 8L8 2M8 2H4M8 2v4"/></svg>
+        </a>
+        <span className="sb-sep" />
+        <button className={`sb-btn${copied ? " sb-copied" : ""}`} onClick={copyEmail}>
+          {copied ? "copied!" : "mail"}
+          {copied
+            ? <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M1.5 5.5l2.5 2.5 4.5-5"/></svg>
+            : <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="7" height="7" rx="1"/><path d="M1 8V1h7"/></svg>
+          }
+        </button>
       </div>
 
       <div className="sb-right">
-        {track && (
-          <>
-            <span className="sb-item">
-              <span className="wave">
-                <span /><span /><span /><span />
-              </span>
-              <span className="sb-track">{track.artist} — {track.title}</span>
-            </span>
-            <span className="sb-sep" />
-          </>
-        )}
+        <SpotifyWidget />
+        <span className="sb-sep" />
 
         <button
           ref={popRef}
@@ -109,7 +114,7 @@ export default function StatusBar({ status, tracks }: Props) {
 
         <span className="sb-sep" />
 
-        <a href="/v1/" className="sb-item sb-btn" title="View v1 portfolio" target="_blank" rel="noopener noreferrer">
+        <a href="/v1/" className="sb-item sb-btn" title="View v1 portfolio" target="_blank" rel="noopener noreferrer" onClick={() => window.dispatchEvent(new CustomEvent("pause-music"))}>
           v1 ↗
         </a>
 

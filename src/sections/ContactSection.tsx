@@ -1,6 +1,7 @@
 import SectionIcon from "@/components/SectionIcon";
 import PixelIcon from "@/components/PixelIcon";
 import ISTClock from "@/components/ISTClock";
+import CopyEmailRow from "@/components/CopyEmailRow";
 import { getSiteConfig, getSocials } from "@/lib/data";
 
 const HEART = `
@@ -32,21 +33,25 @@ export default async function ContactSection() {
           <ISTClock />
         </div>
         <div>
-          {socials.map((s, i) => (
-            <a
-              key={s.id}
-              href={s.href}
-              target={s.href.startsWith("http") ? "_blank" : undefined}
-              rel="noreferrer"
-              className="social-row"
-            >
-              <span className="num">{String(i + 1).padStart(2, "0")}</span>
-              <span className="name">{s.key}</span>
-              <span className="rule" />
-              <span className="val">{s.val}</span>
-              <span className="arrow">↗</span>
-            </a>
-          ))}
+          {socials.map((s, i) =>
+            s.href.startsWith("mailto:") ? (
+              <CopyEmailRow key={s.id} email={s.val} idx={i} />
+            ) : (
+              <a
+                key={s.id}
+                href={s.href}
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel="noreferrer"
+                className="social-row"
+              >
+                <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="name">{s.key}</span>
+                <span className="rule" />
+                <span className="val">{s.val}</span>
+                <span className="arrow">↗</span>
+              </a>
+            )
+          )}
         </div>
         <div className="sec-foot">
           <a href={cfg.calUrl} target="_blank" rel="noreferrer">

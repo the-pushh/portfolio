@@ -11,21 +11,24 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "@google/generative-ai": "^0.24.1",
+    "@phosphor-icons/react": "^2.1.10",
+    "@prisma/client": "^6.0.0",
+    "groq-sdk": "^1.2.1",
     "next": "15.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "@prisma/client": "^6.0.0",
-    "@anthropic-ai/sdk": "^0.40.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "prisma": "^6.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "prisma": "^6.0.0",
     "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0"
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

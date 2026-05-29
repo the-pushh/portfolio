@@ -61,6 +61,13 @@ export default async function ProjectEdit({ params }: { params: Promise<{ id: st
             current (shown in main grid)
           </label>
           <div className="form-row" style={{ flex: 1 }}>
+            <label>kind</label>
+            <select name="kind" defaultValue={p?.kind ?? "project"} style={{ fontFamily: "var(--font-mono)", fontSize: 13, padding: "6px 10px", background: "var(--bg-2)", border: "1px solid var(--line)", borderRadius: 6, color: "var(--ink)" }}>
+              <option value="project">project</option>
+              <option value="experience">experience</option>
+            </select>
+          </div>
+          <div className="form-row" style={{ flex: 1 }}>
             <label>order</label>
             <input name="order" type="number" defaultValue={p?.order ?? 0} />
           </div>

@@ -40,19 +40,10 @@ export default async function SocialsAdmin() {
                   <input name="val" defaultValue={s.val} />
                   <input name="href" defaultValue={s.href} />
                   <input name="order" type="number" defaultValue={s.order} />
-                  <button className="btn" type="submit">
-                    save
-                  </button>
-                  <button
-                    className="btn danger"
-                    type="button"
-                    formAction={async () => {
-                      "use server";
-                      await deleteSocial(s.id);
-                    }}
-                  >
-                    delete
-                  </button>
+                  <button className="btn" type="submit">save</button>
+                </form>
+                <form action={async () => { "use server"; await deleteSocial(s.id); }}>
+                  <button className="btn danger" type="submit">delete</button>
                 </form>
               </td>
             </tr>

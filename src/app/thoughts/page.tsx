@@ -1,18 +1,14 @@
 import Link from "next/link";
 import Shell from "@/chrome/Shell";
-import { getSiteConfig, getThoughts, getTracks } from "@/lib/data";
+import { getSiteConfig, getThoughts } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
 export default async function ThoughtsIndex() {
-  const [thoughts, cfg, tracks] = await Promise.all([
-    getThoughts(),
-    getSiteConfig(),
-    getTracks(),
-  ]);
+  const [thoughts, cfg] = await Promise.all([getThoughts(), getSiteConfig()]);
 
   return (
-    <Shell status={cfg.status} tracks={tracks} showLeftRail={false}>
+    <Shell status={cfg.status} calUrl={cfg.calUrl} email={cfg.email} showLeftRail={false}>
       <main className="detail-shell">
         <nav className="breadcrumb">
           <Link href="/">home</Link>

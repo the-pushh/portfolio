@@ -4,6 +4,7 @@ import { getThoughts } from "@/lib/data";
 
 export default async function ThoughtsSection() {
   const thoughts = await getThoughts();
+  if (thoughts.length === 0) return null;
 
   return (
     <section id="thoughts" className="section">

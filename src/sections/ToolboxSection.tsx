@@ -29,7 +29,7 @@ export default async function ToolboxSection() {
             </div>
           ))}
         </div>
-        <div className="sec-foot">
+        <div className="sec-foot" style={{ borderTop: "1px solid var(--line-soft)" }}>
           <a href={cfg.resumeUrl} target="_blank" rel="noreferrer">
             resume.pdf ↗
           </a>

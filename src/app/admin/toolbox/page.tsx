@@ -17,40 +17,33 @@ export default async function ToolboxAdmin() {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 28 }}>
         {cats.map((c) => (
-          <form
-            key={c.id}
-            action={async (fd: FormData) => {
-              "use server";
-              await saveToolbox(c.id, fd);
-            }}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 3fr 60px auto auto",
-              gap: 8,
-              alignItems: "center",
-              padding: 12,
-              border: "1px solid var(--line)",
-              borderRadius: 10,
-              background: "var(--bg-2)",
-            }}
-          >
-            <input name="name" defaultValue={c.name} />
-            <input name="items" defaultValue={c.items.join(", ")} placeholder="comma separated items" />
-            <input name="order" type="number" defaultValue={c.order} />
-            <button className="btn" type="submit">
-              save
-            </button>
-            <button
-              className="btn danger"
-              type="button"
-              formAction={async () => {
+          <div key={c.id} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <form
+              action={async (fd: FormData) => {
                 "use server";
-                await deleteToolbox(c.id);
+                await saveToolbox(c.id, fd);
+              }}
+              style={{
+                flex: 1,
+                display: "grid",
+                gridTemplateColumns: "1fr 3fr 60px auto",
+                gap: 8,
+                alignItems: "center",
+                padding: 12,
+                border: "1px solid var(--line)",
+                borderRadius: 10,
+                background: "var(--bg-2)",
               }}
             >
-              delete
-            </button>
-          </form>
+              <input name="name" defaultValue={c.name} />
+              <input name="items" defaultValue={c.items.join(", ")} placeholder="comma separated items" />
+              <input name="order" type="number" defaultValue={c.order} />
+              <button className="btn" type="submit">save</button>
+            </form>
+            <form action={async () => { "use server"; await deleteToolbox(c.id); }}>
+              <button className="btn danger" type="submit">delete</button>
+            </form>
+          </div>
         ))}
       </div>
 

@@ -97,7 +97,9 @@ function FeaturedCard({ p }: { p: ProjectDTO }) {
           <Link href={`/projects/${p.slug}`} className="work-name">{p.name}</Link>
           <span className="work-when">{p.when}</span>
         </div>
-        <div className="work-role">{p.role}</div>
+        <div className="work-role">
+          {p.role}
+        </div>
         <p className="work-blurb">{p.blurb}</p>
         <div className="work-foot">
           <div className="work-tags">
@@ -106,7 +108,6 @@ function FeaturedCard({ p }: { p: ProjectDTO }) {
           <div className="work-links">
             {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
             {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
-            <Link className="work-link" href={`/projects/${p.slug}`}>case →</Link>
           </div>
         </div>
       </div>
@@ -126,7 +127,6 @@ function PastItem({ p }: { p: ProjectDTO }) {
       <div className="work-links past-links">
         {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
         {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
-        <Link className="work-link" href={`/projects/${p.slug}`}>case →</Link>
       </div>
     </div>
   );
@@ -134,10 +134,6 @@ function PastItem({ p }: { p: ProjectDTO }) {
 
 export default async function WorkSection() {
   const projects = await getProjects();
-  const current = projects.filter((p) => p.current);
-  const past = projects.filter((p) => !p.current);
-  const featured = current[0];
-  const rest: ProjectDTO[] = [...current.slice(1), ...past];
 
   return (
     <section id="work" className="section">
@@ -153,24 +149,14 @@ export default async function WorkSection() {
           <p className="sec-sub">Where I spend my hours — and the small things I&apos;ve shipped alongside.</p>
         </div>
 
-        {featured && (
-          <>
-            <div className="label">currently shipping</div>
-            <FeaturedCard p={featured} />
-          </>
-        )}
-
-        {rest.length > 0 && (
-          <>
-            <div className="label" style={{ marginTop: 36 }}>projects.</div>
-            <div className="past-grid">
-              {rest.map((p) => <PastItem key={p.id} p={p} />)}
-            </div>
-          </>
+        {projects.length > 0 && (
+          <div className="past-grid">
+            {projects.slice(0, 4).map((p) => <PastItem key={p.id} p={p} />)}
+          </div>
         )}
 
         <div className="sec-foot">
-          <Link href="/projects">all projects →</Link>
+          <Link href="/projects">view all {projects.length} work &amp; projects ↗</Link>
         </div>
       </div>
     </section>

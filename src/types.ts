@@ -23,6 +23,7 @@ export type ProjectDTO = {
   live: string;
   code: string;
   current: boolean;
+  kind: string;
   order: number;
 };
 
@@ -34,12 +35,21 @@ export type SocialDTO = {
   order: number;
 };
 
-export type TrackDTO = {
+export type SpotifyTrackDTO = {
   id: string;
-  artist: string;
   title: string;
-  len: string;
-  order: number;
+  artist: string;
+  previewUrl: string | null;
+  albumArt: string | null;
+};
+
+export type SpotifyPlaylistDTO = {
+  id: string;
+  spotifyId: string;
+  name: string;
+  coverUrl: string | null;
+  isDefault: boolean;
+  tracks: SpotifyTrackDTO[];
 };
 
 export type ToolboxCategoryDTO = {
