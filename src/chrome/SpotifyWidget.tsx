@@ -10,6 +10,7 @@ export default function SpotifyWidget() {
   const [popOpen, setPopOpen] = useState(false);
   const [popClosing, setPopClosing] = useState(false);
   const [popCenterX, setPopCenterX] = useState(0);
+  const [everOpened, setEverOpened] = useState(false);
 
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -41,6 +42,7 @@ export default function SpotifyWidget() {
       const rect = triggerRef.current.getBoundingClientRect();
       setPopCenterX(rect.left + rect.width / 2);
     }
+    setEverOpened(true);
     setPopOpen(true);
   }
 
@@ -86,8 +88,8 @@ export default function SpotifyWidget() {
         </div>
       </span>
 
-      {/* Popup — always in DOM so iframe keeps playing */}
-      <div
+      {/* Popup — mounted on first open, kept in DOM so iframe keeps playing */}
+      {everOpened && <div
         className={`music-popover-fixed${popClosing ? " closing" : ""}`}
         style={{
           left: popCenterX,
@@ -121,7 +123,7 @@ export default function SpotifyWidget() {
             {i === plIdx && <span className="np-now">now playing</span>}
           </button>
         ))}
-      </div>
+      </div>}
     </>
   );
 }
