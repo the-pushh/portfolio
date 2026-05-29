@@ -1,5 +1,5 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import AnimatedTitle from "@/components/AnimatedTitle";
 
@@ -11,6 +11,10 @@ const instr = Instrument_Serif({
   variable: "--font-edit",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "The Pushh",

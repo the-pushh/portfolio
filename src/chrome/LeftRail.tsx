@@ -22,6 +22,7 @@ export default function LeftRail({ hasThoughts = true }: { hasThoughts?: boolean
         <a key={it.id} href={`#${it.id}`} className={active === it.id ? "active" : ""}>
           <span>{it.label}</span>
           <span className="kbd">{it.k}</span>
+          <span className="leftrail-asterisk" aria-hidden />
         </a>
       ))}
       <div

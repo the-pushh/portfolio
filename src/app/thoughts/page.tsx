@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Shell from "@/chrome/Shell";
 import { getSiteConfig, getThoughts } from "@/lib/data";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export default async function ThoughtsIndex() {
               <span className="num">{String(i + 1).padStart(2, "0")}</span>
               <span className="title">{t.title}</span>
               <span className="meta">{t.date} · {t.readTime}</span>
-              <span className="arrow">↗</span>
+              <ArrowUpRight className="arrow" size={16} weight="bold" />
             </Link>
           ))}
         </div>

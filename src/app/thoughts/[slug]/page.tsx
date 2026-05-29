@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Shell from "@/chrome/Shell";
 import { getSiteConfig, getThoughtBySlug, getThoughts } from "@/lib/data";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 export const dynamic = "force-dynamic";
 
@@ -74,7 +75,7 @@ export default async function ThoughtDetail({ params }: { params: Promise<{ slug
           )}
           {next ? (
             <Link href={`/thoughts/${next.slug}`} style={{ textAlign: "right" }}>
-              {next.title} →
+              {next.title} <ArrowRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
             </Link>
           ) : (
             <span />

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Shell from "@/chrome/Shell";
 import { getProjectBySlug, getProjects, getSiteConfig } from "@/lib/data";
+import { ArrowUpRight, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 export const dynamic = "force-dynamic";
 
@@ -101,12 +102,12 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
         <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
           {p.live ? (
             <a className="pill" href={p.live} target="_blank" rel="noreferrer">
-              visit live ↗
+              visit live <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
             </a>
           ) : null}
           {p.code ? (
             <a className="pill" href={p.code} target="_blank" rel="noreferrer">
-              source ↗
+              source <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
             </a>
           ) : null}
         </div>
@@ -114,7 +115,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           {prev ? <Link href={`/projects/${prev.slug}`}>← {prev.name}</Link> : <span />}
           {next ? (
             <Link href={`/projects/${next.slug}`} style={{ textAlign: "right" }}>
-              {next.name} →
+              {next.name} <ArrowRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
             </Link>
           ) : (
             <span />

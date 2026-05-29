@@ -73,25 +73,6 @@ const ENGAGEMENT_TEMPLATES = [
     `looks like there's genuine interest here. pushkar has a habit of being even more interesting live. [schedule a call](${cal}).`,
 ];
 
-const OOS_TEMPLATES = [
-  (topic: string, cal: string) =>
-    `"${topic}" — lenon doesn't have much on that. pushkar might, though. he tends to have surprisingly strong opinions on things outside his lane. [schedule a call with him](${cal}) and find out.`,
-  (topic: string, cal: string) =>
-    `${topic}? not in lenon's notes. but that sounds like exactly the kind of thing pushkar would have a take on — he's the type to have thought about it at 2am. [grab a slot](${cal}).`,
-  (topic: string, cal: string) =>
-    `lenon's got nothing on "${topic}". pushkar might have some fascinating insight there though — worth asking directly. [book a call](${cal}).`,
-  (topic: string, cal: string) =>
-    `that's outside what lenon knows. "${topic}" feels like a pushkar conversation though — he has a habit of knowing things he probably shouldn't. [let's get you two talking](${cal}).`,
-  (topic: string, cal: string) =>
-    `lenon draws a blank on ${topic}. pushkar might not — [schedule some time with him](${cal}) and see where it goes.`,
-];
-
-async function streamText(text: string, writer: WritableStreamDefaultWriter<Uint8Array>, encoder: TextEncoder) {
-  for (const char of text) {
-    await writer.write(encoder.encode(char));
-    await new Promise<void>((r) => setTimeout(r, 18));
-  }
-}
 
 export async function POST(req: Request) {
   let body: { messages?: ChatMessage[] } = {};
@@ -121,7 +102,7 @@ export async function POST(req: Request) {
     const { readable, writable } = new TransformStream();
     const writer = writable.getWriter();
     (async () => {
-      try { await streamText(text, writer, encoder); }
+      try { await writer.write(encoder.encode(text)); }
       finally { await writer.close(); }
     })();
     return new Response(readable, {
@@ -141,13 +122,16 @@ PERSONALITY:
 - Third person for Pushkar always — "he", "him", "Pushkar". Never "I built X".
 - Dry wit, quick takes, occasionally self-referential ("as his portfolio assistant, I've seen the commits")
 - Lowercase casual. Punchy. No filler. No corporate speak. No emoji.
-- If something is genuinely cool about Pushkar, be enthusiastic about it — briefly
+- Never be dismissive. If a topic touches Pushkar's interests (music, 70s rock, design, product thinking, anything in his bio), lean in — he definitely has opinions on it. Be enthusiastic, briefly.
 - Max ~60 words per reply unless someone explicitly asks for more. Concise is the bit.
 
 RULES:
 - Only use the context above. Never fabricate facts.
-- If the question is vague, tangential, or not directly about Pushkar's work/skills/background — engage briefly with personality, then always end your reply with a natural suggestion to book a call: something like "pushkar would love to talk about this — [book a call](${cfg.calUrl})". Vary the wording, keep it casual.
-- If the question is completely outside scope (general coding help, world facts, totally unrelated topics with no Pushkar angle), respond EXACTLY with the token: OUT_OF_SCOPE and nothing else.`;
+- Do NOT end every reply with a call-to-action. Answer the question directly and stop.
+- Include a call-to-action ONLY in these two cases:
+  1. The question is outside what you know about Pushkar — respond warmly, say pushkar would enjoy that conversation, and include [book a call](${cfg.calUrl}). Vary the wording. Never say "out of scope".
+  2. You are explicitly told to prompt the user (the system will handle this separately).
+- When you do include the cal link, use EXACTLY this markdown syntax: [link text](${cfg.calUrl}) — never plain URL, never write "scroll to contact" (the UI adds that automatically).`;
 
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -163,8 +147,6 @@ RULES:
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
 
-  const SENTINEL = "OUT_OF_SCOPE";
-
   (async () => {
     try {
       const completion = await groq.chat.completions.create({
@@ -175,33 +157,9 @@ RULES:
         temperature: 0.6,
       });
 
-      let buffer = "";
-      let triggered = false;
-
       for await (const chunk of completion) {
         const text = chunk.choices[0]?.delta?.content ?? "";
-        if (!text) continue;
-        buffer += text;
-
-        if (buffer.includes(SENTINEL)) {
-          triggered = true;
-          break;
-        }
-
-        const safeLen = Math.max(0, buffer.length - SENTINEL.length + 1);
-        if (safeLen > 0) {
-          await writer.write(encoder.encode(buffer.slice(0, safeLen)));
-          buffer = buffer.slice(safeLen);
-        }
-      }
-
-      if (triggered) {
-        const lastUser = messages.filter((m) => m.role === "user").at(-1)?.content ?? "that";
-        const topic = lastUser.length > 55 ? lastUser.slice(0, 52) + "…" : lastUser;
-        const template = OOS_TEMPLATES[Math.floor(Math.random() * OOS_TEMPLATES.length)];
-        await streamText(template(topic, cfg.calUrl), writer, encoder);
-      } else if (buffer.length > 0) {
-        await writer.write(encoder.encode(buffer));
+        if (text) await writer.write(encoder.encode(text));
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "unknown error";

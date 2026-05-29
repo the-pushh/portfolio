@@ -3,6 +3,7 @@ import PixelIcon from "@/components/PixelIcon";
 import ISTClock from "@/components/ISTClock";
 import CopyEmailRow from "@/components/CopyEmailRow";
 import { getSiteConfig, getSocials } from "@/lib/data";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 
 const HEART = `
 .##.##.
@@ -48,14 +49,14 @@ export default async function ContactSection() {
                 <span className="name">{s.key}</span>
                 <span className="rule" />
                 <span className="val">{s.val}</span>
-                <span className="arrow">↗</span>
+                <ArrowUpRight className="arrow" size={16} weight="bold" />
               </a>
             )
           )}
         </div>
         <div className="sec-foot">
           <a href={cfg.calUrl} target="_blank" rel="noreferrer">
-            book a call ↗
+            book a call <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
           </a>
         </div>
         <div className="site-credit">

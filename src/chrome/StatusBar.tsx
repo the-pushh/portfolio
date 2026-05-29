@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ACCENT_PRESETS, applyAccent, loadAccent } from "@/lib/accent";
 import SpotifyWidget from "./SpotifyWidget";
+import { ArrowUpRight } from "@phosphor-icons/react";
 
 type Props = {
   status: string;
@@ -77,18 +78,18 @@ export default function StatusBar({ status, calUrl, email }: Props) {
       </div>
 
       <div className="sb-right">
-        {/* <SpotifyWidget /> */}
-        {/* <span className="sb-sep" /> */}
+        <SpotifyWidget />
+        <span className="sb-sep" />
 
-        <button
-          ref={popRef}
-          className="sb-btn"
-          aria-label="change accent"
-          onClick={() => setOpen((v) => !v)}
-          style={{ position: "relative" }}
-        >
-          <span className="sb-swatch" style={{ background: accent }} />
-          accent
+        <div ref={popRef} style={{ position: "relative" }}>
+          <button
+            className="sb-btn"
+            aria-label="change accent"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="sb-swatch" style={{ background: accent }} />
+            accent
+          </button>
           {open && (
             <div className="popover" onClick={(e) => e.stopPropagation()}>
               <div className="swatches">
@@ -110,12 +111,12 @@ export default function StatusBar({ status, calUrl, email }: Props) {
               />
             </div>
           )}
-        </button>
+        </div>
 
         <span className="sb-sep" />
 
         <a href="/v1/" className="sb-item sb-btn" title="View v1 portfolio" target="_blank" rel="noopener noreferrer" onClick={() => window.dispatchEvent(new CustomEvent("pause-music"))}>
-          v1 ↗
+          v1 <ArrowUpRight size={11} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
         </a>
 
         <span className="sb-sep" />

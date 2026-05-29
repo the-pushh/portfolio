@@ -1,5 +1,6 @@
 import SectionIcon from "@/components/SectionIcon";
 import { getSiteConfig, getToolbox } from "@/lib/data";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 
 export default async function ToolboxSection() {
   const [cats, cfg] = await Promise.all([getToolbox(), getSiteConfig()]);
@@ -31,7 +32,7 @@ export default async function ToolboxSection() {
         </div>
         <div className="sec-foot" style={{ borderTop: "1px solid var(--line-soft)" }}>
           <a href={cfg.resumeUrl} target="_blank" rel="noreferrer">
-            resume.pdf ↗
+            resume.pdf <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
           </a>
         </div>
       </div>

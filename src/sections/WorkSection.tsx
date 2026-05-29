@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SectionIcon from "@/components/SectionIcon";
 import { getProjects } from "@/lib/data";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import type { ProjectDTO } from "@/types";
 
 function ProjectThumb({ project }: { project: ProjectDTO }) {
@@ -106,8 +107,8 @@ function FeaturedCard({ p }: { p: ProjectDTO }) {
             {p.tags.map((t) => <span key={t} className="proj-tag">{t}</span>)}
           </div>
           <div className="work-links">
-            {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
-            {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+            {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live <ArrowUpRight size={12} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></a>}
+            {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code <ArrowUpRight size={12} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></a>}
           </div>
         </div>
       </div>
@@ -125,8 +126,8 @@ function PastItem({ p }: { p: ProjectDTO }) {
       <div className="past-role">{p.role}</div>
       <p className="past-blurb">{p.blurb}</p>
       <div className="work-links past-links">
-        {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
-        {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+        {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live <ArrowUpRight size={12} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></a>}
+        {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code <ArrowUpRight size={12} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></a>}
       </div>
     </div>
   );
@@ -156,7 +157,7 @@ export default async function WorkSection() {
         )}
 
         <div className="sec-foot">
-          <Link href="/projects">view all {projects.length} work &amp; projects ↗</Link>
+          <Link href="/projects">view all {projects.length} work &amp; projects <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></Link>
         </div>
       </div>
     </section>

@@ -67,6 +67,35 @@ export type SpotifyPlaylistSummary = {
   trackCount: number;
 };
 
+export async function fetchPublicUserPlaylists(userId: string): Promise<SpotifyPlaylistSummary[]> {
+  const token = await getToken();
+  if (!token) return [];
+  try {
+    const all: SpotifyPlaylistSummary[] = [];
+    let url: string | null = `https://api.spotify.com/v1/users/${userId}/playlists?limit=50`;
+    while (url) {
+      const res: Response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+        next: { revalidate: 3600 },
+      });
+      if (!res.ok) break;
+      const data: { items?: any[]; next?: string | null } = await res.json();
+      for (const pl of data.items ?? []) {
+        all.push({
+          spotifyId: pl.id,
+          name: pl.name,
+          coverUrl: pl.images?.[0]?.url ?? null,
+          trackCount: pl.tracks?.total ?? 0,
+        });
+      }
+      url = data.next ?? null;
+    }
+    return all;
+  } catch {
+    return [];
+  }
+}
+
 export async function fetchUserPlaylists(userToken: string): Promise<SpotifyPlaylistSummary[]> {
   if (!userToken) return [];
   const token = userToken;

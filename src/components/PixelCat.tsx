@@ -77,8 +77,9 @@ function buildPattern(emoji: Emoji, blink: Blink): string {
     cut(G, 10, 4, 9);
     cut(G, 11, 4, 5, 6, 7, 8, 9);
   } else if (emoji === "think") {
-    // 🤔 small pursed
-    cut(G, 10, 6, 7, 8);
+    // 🤔 tilted — high right corner, low left corner
+    cut(G, 9,  8, 9);
+    cut(G, 10, 5, 6, 7, 8);
   } else if (emoji === "surprise") {
     // 😮 tall O
     cut(G, 8,  6, 7, 8);
@@ -137,11 +138,10 @@ export default function PixelCat({ size = 40, talking = false }: { size?: number
     return () => { dead = true; clearTimeout(t); };
   }, [talking]);
 
-  // ── talking ────────────────────────────────────────────
+  // ── thinking (streaming) ──────────────────────────────
   useEffect(() => {
     if (!talking) { setEmoji("grin"); return; }
-    const id = setInterval(() => setEmoji((e) => (e === "open" ? "grin" : "open")), 180);
-    return () => clearInterval(id);
+    setEmoji("think");
   }, [talking]);
 
   // ── blink ──────────────────────────────────────────────

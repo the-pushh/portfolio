@@ -9,15 +9,43 @@ type PanelState = "closed" | "open" | "closing";
 
 const CLOSE_MS = 230;
 
-function renderMd(text: string) {
+function renderMd(text: string, calUrl: string, onContact: () => void) {
   return text.split("\n").map((line, li) => {
     const parts: React.ReactNode[] = [];
-    const re = /\*\*(.+?)\*\*|\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
+    const re = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)|(https?:\/\/[^\s)]+)/g;
     let last = 0, m: RegExpExecArray | null;
     while ((m = re.exec(line)) !== null) {
       if (m.index > last) parts.push(line.slice(last, m.index));
-      if (m[1]) parts.push(<strong key={m.index}>{m[1]}</strong>);
-      else parts.push(<a key={m.index} href={m[3]} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>{m[2]}</a>);
+      if (m[1]) {
+        parts.push(<strong key={m.index}>{m[1]}</strong>);
+      } else if (m[2]) {
+        const href = m[3].startsWith("http") ? m[3] : `https://${m[3]}`;
+        const isCal = href === calUrl || href.startsWith(calUrl);
+        if (isCal) {
+          parts.push(
+            <span key={m.index}>
+              <a href={href} target="_blank" rel="noreferrer" className="chat-inline-link">{m[2]}</a>
+              {" or "}
+              <button className="chat-inline-link chat-contact-btn" onClick={onContact}>scroll to contact info</button>
+            </span>
+          );
+        } else {
+          parts.push(<a key={m.index} href={href} target="_blank" rel="noreferrer" className="chat-inline-link">{m[2]}</a>);
+        }
+      } else if (m[4]) {
+        const isCal = m[4] === calUrl || m[4].startsWith(calUrl);
+        if (isCal) {
+          parts.push(
+            <span key={m.index}>
+              <a href={m[4]} target="_blank" rel="noreferrer" className="chat-inline-link">book a call</a>
+              {" or "}
+              <button className="chat-inline-link chat-contact-btn" onClick={onContact}>scroll to contact info</button>
+            </span>
+          );
+        } else {
+          parts.push(<a key={m.index} href={m[4]} target="_blank" rel="noreferrer" className="chat-inline-link">{m[4]}</a>);
+        }
+      }
       last = m.index + m[0].length;
     }
     if (last < line.length) parts.push(line.slice(last));
@@ -25,7 +53,7 @@ function renderMd(text: string) {
   });
 }
 
-export default function ChatBot() {
+export default function ChatBot({ calUrl }: { calUrl: string }) {
   const [panelState, setPanelState] = useState<PanelState>("closed");
   const [msgs, setMsgs] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -35,18 +63,27 @@ export default function ChatBot() {
   const hovering = useRef(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const open = panelState !== "closed";
 
   function openChat() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setPanelState("open");
+    setTimeout(() => inputRef.current?.focus(), 50);
   }
 
   function closeChat() {
     setDim(false);
     setPanelState("closing");
     closeTimer.current = setTimeout(() => setPanelState("closed"), CLOSE_MS);
+  }
+
+  function scrollToContact() {
+    closeChat();
+    setTimeout(() => {
+      document.getElementById("connect")?.scrollIntoView({ behavior: "smooth" });
+    }, CLOSE_MS);
   }
 
   // Global ESC to close, / to open
@@ -160,7 +197,7 @@ export default function ChatBot() {
                 <div key={i} className={`chat-msg ${m.role}`}>
                   {m.content ? (
                     <>
-                      {renderMd(m.content)}
+                      {renderMd(m.content, calUrl, scrollToContact)}
                       {isStreamingTail && <span className="stream-cursor" />}
                     </>
                   ) : isStreamingTail ? (
@@ -176,6 +213,7 @@ export default function ChatBot() {
           </div>
           <div className="chat-input-row">
             <input
+              ref={inputRef}
               className="chat-input"
               placeholder="type a message…"
               value={input}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Shell from "@/chrome/Shell";
 import { getProjects, getSiteConfig } from "@/lib/data";
 import type { ProjectDTO } from "@/types";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 
 export const dynamic = "force-dynamic";
 
@@ -15,8 +16,8 @@ function PastItem({ p }: { p: ProjectDTO }) {
       <div className="past-role">{p.role}</div>
       <p className="past-blurb">{p.blurb}</p>
       <div className="work-links past-links">
-        {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live ↗</a>}
-        {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code ↗</a>}
+        {p.live && <a className="work-link" href={p.live} target="_blank" rel="noreferrer">live <ArrowUpRight size={12} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></a>}
+        {p.code && <a className="work-link" href={p.code} target="_blank" rel="noreferrer">code <ArrowUpRight size={12} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></a>}
       </div>
     </div>
   );

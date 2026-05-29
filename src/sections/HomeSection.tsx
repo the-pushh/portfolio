@@ -1,6 +1,7 @@
 import NameMorph from "@/components/NameMorph";
 import SectionIcon from "@/components/SectionIcon";
 import { getSiteConfig } from "@/lib/data";
+import PullButton from "@/components/PullButton";
 
 export default async function HomeSection() {
   const cfg = await getSiteConfig();
@@ -24,11 +25,8 @@ export default async function HomeSection() {
             <p key={i}>{p}</p>
           ))}
         </div>
-        <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 10 }}>
-          <span className="dot" />
-          <a href={cfg.calUrl} target="_blank" rel="noreferrer" className="home-cta">
-            {cfg.status} ↗
-          </a>
+        <div style={{ marginTop: 24 }}>
+          <PullButton href={cfg.calUrl} label={cfg.status} />
         </div>
       </div>
     </section>

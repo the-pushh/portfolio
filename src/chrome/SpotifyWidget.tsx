@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 
 type Playlist = { id: string; spotifyId: string; name: string; isDefault: boolean };
 
@@ -221,6 +222,27 @@ export default function SpotifyWidget() {
         <div style={{ position: "relative", borderRadius: 8, overflow: "hidden", minHeight: 152 }}>
           {!playerReady && <div className="sp-skeleton" style={{ position: "absolute", inset: 0, borderRadius: 8 }} />}
           <div ref={iframeRef} style={{ borderRadius: 8, overflow: "hidden" }} />
+        </div>
+        <div style={{ marginTop: 8, marginBottom: 2 }}>
+          <a
+            href="https://accounts.spotify.com/en/login?continue=https%3A%2F%2Fopen.spotify.com%2F"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "block",
+              textAlign: "center",
+              fontSize: 10,
+              color: "var(--accent)",
+              background: "color-mix(in srgb, var(--accent) 15%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--accent) 40%, transparent)",
+              borderRadius: 999,
+              padding: "4px 10px",
+              textDecoration: "none",
+              letterSpacing: "0.02em",
+            }}
+          >
+            log into your spotify for full tracks <ArrowUpRight size={11} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
+          </a>
         </div>
         <div className="music-popover-label" style={{ marginTop: 10 }}>switch playlist</div>
         {playlists.map((p, i) => (

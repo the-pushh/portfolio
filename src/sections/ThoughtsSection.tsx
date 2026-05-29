@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SectionIcon from "@/components/SectionIcon";
 import { getThoughts } from "@/lib/data";
+import { ArrowUpRight, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 export default async function ThoughtsSection() {
   const thoughts = await getThoughts();
@@ -27,17 +28,17 @@ export default async function ThoughtsSection() {
               <span className="meta">
                 {t.date} · {t.readTime}
               </span>
-              <span className="arrow">↗</span>
+              <ArrowUpRight className="arrow" size={16} weight="bold" />
             </Link>
           ))}
         </div>
         <div className="sec-foot">
-          <Link href="/thoughts">all writing →</Link>
+          <Link href="/thoughts">all writing <ArrowRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} /></Link>
           <a href="#" target="_blank" rel="noreferrer">
-            rss ↗
+            rss <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
           </a>
           <a href="https://x.com/0xPushkr" target="_blank" rel="noreferrer">
-            x ↗
+            x <ArrowUpRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
           </a>
         </div>
       </div>

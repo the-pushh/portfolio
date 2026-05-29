@@ -40,7 +40,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <Link href="/admin/projects">projects</Link>
         <Link href="/admin/config">site config</Link>
         <Link href="/admin/socials">socials</Link>
-        <Link href="/admin/tracks">tracks</Link>
+        <Link href="/admin/playlists">playlists</Link>
         <Link href="/admin/toolbox">toolbox</Link>
         <div style={{ marginTop: "auto", paddingTop: 18, borderTop: "1px solid var(--line-soft)" }}>
           <Link href="/">← view site</Link>
