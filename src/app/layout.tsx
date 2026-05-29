@@ -16,29 +16,37 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const TITLE = "The Pushh";
+const DESC = "Pushkar Borkar — Product Engineer based in Bangalore.";
+const SITE_URL = "https://www.thepushh.com";
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://thepushh.com"),
-  title: "The Pushh",
-  description: "Pushkar Borkar — Product Engineer based in Bangalore.",
-  icons: {
-    icon: "/icons/home.svg",
-  },
+  title: TITLE,
+  description: DESC,
+  icons: { icon: "/icons/home.svg" },
   openGraph: {
-    title: "The Pushh",
-    description: "Pushkar Borkar — Product Engineer based in Bangalore.",
+    title: TITLE,
+    description: DESC,
+    url: SITE_URL,
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Pushh",
-    description: "Pushkar Borkar — Product Engineer based in Bangalore.",
+    title: TITLE,
+    description: DESC,
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jb.variable} ${instr.variable}`}>
+      <head>
+        <meta itemProp="name" content={TITLE} />
+        <meta itemProp="description" content={DESC} />
+        <meta itemProp="image" content={`${SITE_URL}/opengraph-image`} />
+      </head>
       <body>
         <AnimatedTitle />
         {children}
