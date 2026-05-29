@@ -17,6 +17,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://thepushh.com"),
   title: "The Pushh",
   description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
   icons: {

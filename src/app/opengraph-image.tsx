@@ -68,15 +68,18 @@ export default async function Image() {
         {/* Role */}
         <div
           style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
             fontSize: 30,
             color: "#888",
             fontWeight: 400,
             letterSpacing: "0.01em",
           }}
         >
-          {cfg.role}
-          <span style={{ color: "#feacd6", marginLeft: 6 }}>·</span>
-          <span style={{ marginLeft: 6 }}>{cfg.location}</span>
+          <span>{cfg.role}</span>
+          <span style={{ color: "#feacd6" }}>·</span>
+          <span>{cfg.location}</span>
         </div>
 
         {/* Bottom accent bar */}
