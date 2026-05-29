@@ -19,20 +19,20 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://thepushh.com"),
   title: "The Pushh",
-  description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
+  description: "Pushkar Borkar — Product Engineer based in Bangalore.",
   icons: {
     icon: "/icons/home.svg",
   },
   openGraph: {
     title: "The Pushh",
-    description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
+    description: "Pushkar Borkar — Product Engineer based in Bangalore.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "The Pushh",
-    description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
+    description: "Pushkar Borkar — Product Engineer based in Bangalore.",
   },
 };
 
