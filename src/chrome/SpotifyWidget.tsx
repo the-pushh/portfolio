@@ -108,7 +108,7 @@ export default function SpotifyWidget() {
           height="152"
           style={{ borderRadius: 8, border: "none" }}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
+          loading="eager"
         />
         <div className="music-popover-label" style={{ marginTop: 10 }}>switch playlist</div>
         {playlists.map((p, i) => (

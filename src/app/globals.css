@@ -1492,6 +1492,22 @@ h1.editorial,
   z-index: 120;
   animation: popUp 0.25s ease;
   white-space: nowrap;
+  max-width: calc(100vw - 32px);
+}
+@media (max-width: 520px) {
+  .music-prompt {
+    flex-direction: column;
+    align-items: flex-start;
+    white-space: normal;
+    width: calc(100vw - 32px);
+    bottom: calc(var(--status-h) + 8px);
+  }
+  .music-tooltip {
+    width: max-content;
+    max-width: calc(100vw - 48px);
+    white-space: normal;
+    text-align: center;
+  }
 }
 .music-prompt-clef {
   font-size: 20px;
