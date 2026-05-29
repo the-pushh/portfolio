@@ -200,10 +200,10 @@ If someone is reaching out I want to know what they are building, what problem t
   const toolboxData = [
     { name: "Frontend", items: ["Javascript", "Typescript", "React", "Next.js", "TailwindCSS", "React-Native"] },
     { name: "Backend", items: ["Python", "FastAPI", "Flask", "Node.js", "Express.js"] },
-    { name: "Database", items: ["MongoDB", "SQL", "MySQL", "Redis"] },
-    { name: "Web3", items: ["ethers.js", "wagmi"] },
+    { name: "Database", items: ["MongoDB", "SQL", "MySQL", "Redis", "PostgreSQL"] },
+    { name: "Web3", items: ["ethers.js", "wagmi", "Solidity", "Foundry"] },
     { name: "Cloud", items: ["Vercel", "AWS", "GCP", "Docker"] },
-    { name: "Frameworks", items: ["Electron", "Supabase"] },
+    { name: "Frameworks", items: ["Electron", "Supabase", "Git", "Figma"] },
   ];
   await prisma.toolboxCategory.deleteMany({});
   for (let i = 0; i < toolboxData.length; i++) {
