@@ -16,7 +16,7 @@ export default function StatusBar({ status, calUrl, email }: Props) {
   const [accent, setAccent] = useState<string>("#FEACD6");
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const popRef = useRef<HTMLButtonElement | null>(null);
+  const popRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const stored = loadAccent();
