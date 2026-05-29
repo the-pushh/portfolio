@@ -201,8 +201,10 @@ export default function SpotifyWidget() {
         <div className="music-popover-label" style={{ marginBottom: 6 }}>
           pushkar&apos;s curated playlists
         </div>
-        {!playerReady && <div className="sp-skeleton" style={{ height: 152, borderRadius: 8 }} />}
-        <div ref={iframeRef} style={{ borderRadius: 8, overflow: "hidden", display: playerReady ? "block" : "none" }} />
+        <div style={{ position: "relative", borderRadius: 8, overflow: "hidden", minHeight: 152 }}>
+          {!playerReady && <div className="sp-skeleton" style={{ position: "absolute", inset: 0, borderRadius: 8 }} />}
+          <div ref={iframeRef} style={{ borderRadius: 8, overflow: "hidden" }} />
+        </div>
         <div className="music-popover-label" style={{ marginTop: 10 }}>switch playlist</div>
         {playlists.map((p, i) => (
           <button
