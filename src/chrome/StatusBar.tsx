@@ -77,8 +77,8 @@ export default function StatusBar({ status, calUrl, email }: Props) {
       </div>
 
       <div className="sb-right">
-        <SpotifyWidget />
-        <span className="sb-sep" />
+        {/* <SpotifyWidget /> */}
+        {/* <span className="sb-sep" /> */}
 
         <button
           ref={popRef}

@@ -26,7 +26,7 @@ export default function Shell({ children, status, calUrl, email, hasThoughts = t
       {children}
       <StatusBar status={status} calUrl={calUrl} email={email} />
       <ChatBot />
-      <MusicPrompt />
+      {/* <MusicPrompt /> */}
     </ScrollProvider>
   );
 }
