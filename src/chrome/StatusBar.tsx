@@ -119,8 +119,6 @@ export default function StatusBar({ status, calUrl, email }: Props) {
           v1 <ArrowUpRight size={11} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
         </a>
 
-        <span className="sb-sep" />
-
         <span className="sb-item sb-time">{time}</span>
       </div>
     </div>

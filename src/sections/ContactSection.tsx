@@ -61,7 +61,7 @@ export default async function ContactSection() {
         </div>
         <div className="site-credit">
           <PixelIcon pattern={HEART} size={14} color="var(--accent)" gap={1} />
-          <span>made with care in bangalore · last build {date}</span>
+          <span>made with love in bangalore</span>
         </div>
       </div>
     </section>
