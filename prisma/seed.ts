@@ -199,10 +199,10 @@ If someone is reaching out I want to know what they are building, what problem t
   // ---------- Toolbox ----------
   const toolboxData = [
     { name: "Frontend", items: ["Javascript", "Typescript", "React", "Next.js", "TailwindCSS", "React-Native"] },
-    { name: "Backend", items: ["Python", "Flask", "Node.js", "Express.js"] },
+    { name: "Backend", items: ["Python", "FastAPI", "Flask", "Node.js", "Express.js"] },
     { name: "Database", items: ["MongoDB", "SQL", "MySQL", "Redis"] },
     { name: "Web3", items: ["ethers.js", "wagmi"] },
-    { name: "Misc", items: ["Vercel", "Git", "Figma"] },
+    { name: "Cloud", items: ["Vercel", "AWS", "GCP", "Docker"] },
     { name: "Frameworks", items: ["Electron", "Supabase"] },
   ];
   await prisma.toolboxCategory.deleteMany({});
