@@ -163,6 +163,19 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
       kind: "project",
       order: 0,
     },
+    {
+      slug: "OMEGALabs Inc.",
+      name: "OMEGALabs AI",
+      role: "Founding Engineer & Tech Lead",
+      when: "Oct 2024 — Dec 2025",
+      blurb: "Led full-stack development of core systems at Omega Labs including screen recording, a work reward flow, and a task marketplace, while owning execution across engineering and design through team turnover in a fast moving early stage environment.",
+      tags: ["AI", "LLM", "Agents", "VoiceAI", "Software Architecture", "Management", "Video Processing"],
+      live: "https://www.omega.inc",
+      code: "",
+      current: false,
+      kind: "experience",
+      order: 8,
+    },
   ];
 
   await prisma.project.deleteMany({});
@@ -206,14 +219,28 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
   const socials = [
     { key: "Github", val: "@Pushkar1809", href: "https://github.com/Pushkar1809" },
     { key: "LinkedIn", val: "/in/pushkar-borkar", href: "https://www.linkedin.com/in/pushkar-borkar" },
-    { key: "Twitter/X", val: "@0xPushkr", href: "https://twitter.com/0xpushkr" },
-    { key: "Email", val: "pushkarborkar1809@gmail.com", href: "mailto:pushkarborkar1809@gmail.com" },
-    { key: "Twitch", val: "@pushkarborkar", href: "https://www.twitch.tv/pushkarborkar" },
-    { key: "Instagram", val: "@champagnebappi", href: "https://www.instagram.com/champagnebappi/" },
+    { key: "Twitter/X", val: "@the_pushh", href: "https://twitter.com/the_pushh" },
+    { key: "Email", val: "me@thepushh.com", href: "mailto:me@thepushh.com" },
+    { key: "Instagram", val: "@the_pushh", href: "https://www.instagram.com/the_pushh/" },
   ];
   await prisma.social.deleteMany({});
   for (let i = 0; i < socials.length; i++) {
     await prisma.social.create({ data: { ...socials[i], order: i } });
+  }
+
+  // ---------- Spotify Playlists ----------
+  const playlists = [
+    { spotifyId: "5PwsPoX590Bi9J5AgXSNGL", name: "The Groovy Train", isDefault: false, order: 0 },
+    { spotifyId: "79k6Ro7BfRTQKfnFtgJAZk", name: "Dimension Shifting Rock", isDefault: false, order: 1 },
+    { spotifyId: "7dg2tOyOEqopjt4zqcogyW", name: "If you like Nirvana", isDefault: false, order: 2 },
+    { spotifyId: "7CBtW9Mn4O0jJf6sGpwHL2", name: "Ain't no guitar like these", isDefault: false, order: 3 },
+    { spotifyId: "4c7WVJWWZGbiQAUsHFOKIM", name: "Should have died in '79", isDefault: false, order: 4 },
+    { spotifyId: "1vIYoXFZf5jTHkDUXFlwuA", name: "Gazals Therapy", isDefault: false, order: 5 },
+    { spotifyId: "7KM1nzfWcqeIrN7LuwWRmy", name: "Smoother than a que ball", isDefault: false, order: 6 },
+  ];
+  await prisma.spotifyPlaylist.deleteMany({});
+  for (const pl of playlists) {
+    await prisma.spotifyPlaylist.create({ data: pl });
   }
 
   console.log("seeded");
