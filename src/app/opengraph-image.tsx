@@ -10,7 +10,7 @@ async function loadGoogleFont(family: string, weight: number) {
     `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}:wght@${weight}`,
     { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" } }
   ).then((r) => r.text());
-  const url = css.match(/src: url\((.+?)\) format\('(opentype|truetype)'\)/)?.[1];
+  const url = css.match(/src: url\((.+?)\) format\('[^']+'\)/)?.[1];
   if (!url) throw new Error(`Font URL not found for ${family}`);
   return fetch(url).then((r) => r.arrayBuffer());
 }
