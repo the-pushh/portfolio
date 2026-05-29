@@ -52,6 +52,7 @@
 }
 
 html {
+  background: #141414;
   scroll-behavior: smooth;
   scroll-padding-top: var(--top-h);
 }
