@@ -31,6 +31,7 @@ export default function SpotifyWidget() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
   const [everOpened, setEverOpened] = useState(false);
+  const [initStarted, setInitStarted] = useState(false);
 
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLDivElement | null>(null);
@@ -71,6 +72,7 @@ export default function SpotifyWidget() {
   function tryInit(spotifyId: string) {
     if (initDone.current || !apiRef.current || !iframeRef.current) return;
     initDone.current = true;
+    setInitStarted(true);
     apiRef.current.createController(
       iframeRef.current,
       { uri: `spotify:playlist:${spotifyId}`, width: "100%", height: 152 },
@@ -129,8 +131,8 @@ export default function SpotifyWidget() {
     <>
       <span className="sb-item now-playing">
         <button className="sb-btn mute-btn" style={{ width: 28, padding: "0 6px" }} aria-label={isPlaying ? "pause" : "play"}
-          onClick={() => controllerRef.current?.togglePlay()} disabled={!playerReady}>
-          {!playerReady
+          onClick={() => initStarted ? controllerRef.current?.togglePlay() : openPop()} disabled={initStarted && !playerReady}>
+          {initStarted && !playerReady
             ? <span className="sp-loader" />
             : isPlaying
               ? <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>
