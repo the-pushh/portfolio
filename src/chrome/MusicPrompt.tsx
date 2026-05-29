@@ -23,7 +23,8 @@ export default function MusicPrompt() {
   function onYes() {
     setCookie("on");
     setShow(false);
-    window.dispatchEvent(new CustomEvent("music-autoplay"));
+    const el = document.querySelector(".marquee-container") as HTMLElement | null;
+    el?.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
   }
 
   function onNo() {
