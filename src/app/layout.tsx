@@ -18,9 +18,20 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "The Pushh",
-  description: "Pushkar's Portfolio",
+  description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
   icons: {
     icon: "/icons/home.svg",
+  },
+  openGraph: {
+    title: "The Pushh",
+    description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Pushh",
+    description: "Pushkar Borkar — Generalist Engineer based in Bangalore.",
   },
 };
 
