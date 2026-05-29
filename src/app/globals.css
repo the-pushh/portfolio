@@ -1476,6 +1476,85 @@ h1.editorial,
   animation-delay: 0.36s;
 }
 
+/* Music preference prompt */
+.music-prompt {
+  position: fixed;
+  bottom: calc(var(--status-h) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 120;
+  animation: popUp 0.25s ease;
+  white-space: nowrap;
+}
+.music-prompt-clef {
+  font-size: 20px;
+  color: var(--accent);
+  line-height: 1;
+}
+.music-prompt-q {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.music-prompt-btns {
+  display: flex;
+  gap: 6px;
+}
+.music-prompt-yes {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  background: var(--accent);
+  color: #141414;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.music-prompt-no {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  background: transparent;
+  color: var(--ink-mute);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.music-prompt-no:hover { color: var(--ink-soft); border-color: var(--line-soft); }
+
+.music-tooltip {
+  position: fixed;
+  bottom: calc(var(--status-h) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--ink-mute);
+  z-index: 120;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+.music-tooltip.fading { opacity: 0; }
+
+@keyframes popUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* Playlist popup (fixed positioned, never clipped) */
 .music-popover-fixed {
   position: fixed;

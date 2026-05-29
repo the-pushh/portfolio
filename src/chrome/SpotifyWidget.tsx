@@ -59,6 +59,13 @@ export default function SpotifyWidget() {
     );
   }
 
+  /* listen for music-autoplay from MusicPrompt */
+  useEffect(() => {
+    const onAutoplay = () => controllerRef.current?.play();
+    window.addEventListener("music-autoplay", onAutoplay);
+    return () => window.removeEventListener("music-autoplay", onAutoplay);
+  }, []);
+
   /* load Spotify iFrame API — call tryInit when ready */
   useEffect(() => {
     window.onSpotifyIframeApiReady = (api) => {

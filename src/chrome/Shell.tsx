@@ -7,6 +7,7 @@ import LeftRail from "./LeftRail";
 import SearchBar from "./SearchBar";
 import StatusBar from "./StatusBar";
 import ChatBot from "./ChatBot";
+import MusicPrompt from "./MusicPrompt";
 type Props = {
   children: ReactNode;
   status: string;
@@ -25,6 +26,7 @@ export default function Shell({ children, status, calUrl, email, hasThoughts = t
       {children}
       <StatusBar status={status} calUrl={calUrl} email={email} />
       <ChatBot />
+      <MusicPrompt />
     </ScrollProvider>
   );
 }
