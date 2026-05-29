@@ -4,23 +4,21 @@ const prisma = new PrismaClient();
 
 async function main() {
   // ---------- SiteConfig ----------
-  const about = `I'm a designer who learned to code, and a developer who never stopped sketching. For the last few years I've been making things at the intersection of design, engineering, and music — interfaces that handle live data without feeling frantic, smart contracts I half-understand, and side projects that survive a year.
+  const about = `I am a product engineer with a knack for design and management. Started in web3, building blockchain systems and DeFi platforms, then moved into AI, shipping LLM apps, RAG systems, and now going deep into agent orchestration. Small teams, fast ships, real products.
 
-I currently lead design & web3 work at Marsmello, a decentralised Mars colonisation game. Before that I built three fintech dashboards as a freelancer, shipped Stanza, Slowmail and Rifftrack as solo projects, and helped folioX rebuild its publishing pipeline. I read manuals like poems, write poems like manuals, and record demos in my room under my own name. Based in Bangalore.`;
+Outside of code I play guitar, obsess over 70s rock and vinyl, write poetry, and read philosophy. Running Polyjamorous as a music curator. Have a cat named Lenon. Dream is a cottage in the mountains and a shack by the sea, building software and making music.`;
 
-  const bio = `Pushkar Borkar — a.k.a. ThePushh. Multidisciplinary builder based in Bangalore, India (IST, UTC+5:30).
+  const bio = `I am Pushkar Borkar, a full-stack engineer and product designer based in Bengaluru, India, specifically Koramangala. I have 3+ years of experience building at early-stage startups. I started in web3, building blockchain identity systems, smart contract tooling, and DeFi platforms as a founding engineer, and I am now deep in the AI space, working with LLMs, shipping AI powered applications, and learning agent orchestration and multi-agent system design. I have worked across React, Next.js, Node.js, Python, Electron, and TypeScript and I am actively building in the AI engineering space with a focus on agents and orchestration frameworks.
 
-Role: designer who learned to code; developer who never stopped sketching. Currently open to work and looking for a co-founder / partner for something weird and ambitious.
+My professional style is high agency and generalist. I have always joined as one of the first engineers on the team which means I have owned the full surface at every company: system architecture, design systems, frontend, backend, infrastructure, and shipping fast under pressure with small teams. I do not wait for a scope. I find what needs building and build it. I am comfortable making hard calls, asking uncomfortable questions early, and maintaining delivery even when teams are in flux.
 
-Now: leading design & web3 work at Marsmello (decentralised Mars colonisation game). Shipping the v2 economy update.
+Outside of tech I live an intensely artistic life. I am a musician, guitarist, and music curator with a deep obsession with 70s rock, classic rock, grunge, Led Zeppelin, Pink Floyd, Linkin Park, Tame Impala, and vinyl. I play guitar, sing, and write my own music. Curation is as important to me as creation. I think deeply about how music is sequenced, contextualized, and shared, how a playlist can feel like a journey, how the right song in the right moment changes everything. I am building a genre fluid music community and events brand called Polyjamorous with the vision of bringing serious music curation and live experiences to people who care about how music feels. I also make short form content about classic rock and hip hop lore because the stories behind the music are as compelling as the music itself.
 
-Past projects: Marsmello, Rifftrack, Stanza, Slowmail, folioX, freelance fintech dashboards.
+Beyond music I write poetry, read philosophy, and think constantly about craft, intentionality, and what it means to make something worth making. Art in all its forms is not a hobby for me, it is a lens. I love travelling and believe that moving through the world, different cities, different cultures, different sounds, is part of how you develop taste and perspective. I am approachable, direct, and genuinely curious. I value real conversations over surface level ones and I love talking about startups, AI agents, music, philosophy, or anything that goes somewhere interesting.
 
-Stack: TypeScript, React, Next.js; Node/Express, Python; ethers.js, wagmi, Foundry. Vercel, Figma, Git.
+I have a cat named Lenon, named after John Lennon, who is a big part of my daily life. My longer vision for how I want to live is specific: a cottage in the mountains and a shack by the sea. Both full of tech, music gear, books, and bohemian warmth. I want to grow my own food, keep cattle and poultry, live close to the land in the way that feels almost Amish in its simplicity and intentionality, but with a studio in the corner, a vinyl collection on the wall, and the internet humming quietly in the background. I want to build my own product from that place, make music from that place, and live a life where the work and the art and the land are not separate things but the same thing expressed differently.
 
-Aesthetic: editorial, dark, single-accent minimalism. Loves typography, slow software, music tech.
-
-Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use emoji. Don't oversell. Keep replies under ~60 words unless asked for more.`;
+If someone is reaching out I want to know what they are building, what problem they are trying to solve, and whether there is a real conversation to be had. I respond well to directness and I give it back in equal measure.`;
 
   await prisma.siteConfig.upsert({
     where: { id: "singleton" },
@@ -63,7 +61,7 @@ Tone for replies: warm, short, slightly literary, lowercase-leaning. Don't use e
       slug: "foliox",
       name: "folioX",
       role: "Lead Software Engineer",
-      when: "Dec 2023 — Present",
+      when: "Dec 2023 — Sept 2024",
       blurb: "Built web3 portfolio management software with liquid staking and liquidity pools. Designed and developed landing pages with motion graphics. Set up company-wide design system and code infrastructure.",
       tags: ["React", "Next.js", "Wagmi", "Ethers.js", "Tailwind", "Radix"],
       live: "https://www.foliox.io/",
