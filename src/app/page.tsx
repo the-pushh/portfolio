@@ -6,6 +6,8 @@ import ContactSection from "@/sections/ContactSection";
 import Shell from "@/chrome/Shell";
 import { getSiteConfig, getThoughts } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const [cfg, thoughts] = await Promise.all([getSiteConfig(), getThoughts()]);
   return (
