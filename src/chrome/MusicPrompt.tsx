@@ -10,6 +10,7 @@ export default function MusicPrompt() {
   const [show, setShow] = useState(false);
   const [tooltip, setTooltip] = useState(false);
   const [tooltipFading, setTooltipFading] = useState(false);
+  const [tooltipX, setTooltipX] = useState(0);
 
   useEffect(() => {
     const pref = document.cookie.match(/(?:^| )sound-pref=([^;]+)/)?.[1];
@@ -28,6 +29,13 @@ export default function MusicPrompt() {
   function onNo() {
     setCookie("off");
     setShow(false);
+    const el = document.querySelector(".marquee-container") as HTMLElement | null;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      setTooltipX(rect.left + rect.width / 2);
+    } else {
+      setTooltipX(window.innerWidth / 2);
+    }
     setTooltip(true);
     setTimeout(() => setTooltipFading(true), 3000);
     setTimeout(() => { setTooltip(false); setTooltipFading(false); }, 3600);
@@ -46,8 +54,11 @@ export default function MusicPrompt() {
         </div>
       )}
       {tooltip && (
-        <div className={`music-tooltip${tooltipFading ? " fading" : ""}`}>
-          hover the playlist name anytime to browse curated playlists
+        <div
+          className={`music-tooltip${tooltipFading ? " fading" : ""}`}
+          style={{ left: tooltipX, transform: "translateX(-50%)" }}
+        >
+          hover here for curated playlists
         </div>
       )}
     </>
