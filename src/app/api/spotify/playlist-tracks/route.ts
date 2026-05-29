@@ -23,7 +23,7 @@ export async function GET(req: Request) {
     `https://api.spotify.com/v1/playlists/${id}/tracks?fields=items(track(name,duration_ms,artists(name))),next&limit=50`;
 
   while (url) {
-    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 3600 } });
+    const res: Response = await fetch(url, { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 3600 } });
     if (!res.ok) break;
     const data = await res.json();
     for (const item of data.items ?? []) {
