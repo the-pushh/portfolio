@@ -150,7 +150,7 @@ export default function SearchBar({ onOpenChat, hasThoughts = true }: { onOpenCh
       <div className="searchbar">
         <button className="search-trigger" onClick={() => setOpen(true)} aria-label="open command palette">
           <svg className="search-icon-mobile" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
-          <span className="search-trigger-label">search · jump · do</span>
+          <span className="search-trigger-label">search</span>
           <span className="kbd-chip">⌘K</span>
         </button>
       </div>
