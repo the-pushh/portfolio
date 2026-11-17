@@ -67,9 +67,20 @@ export async function deleteThought(id: string) {
   revalidatePath("/");
 }
 
-// ----- Projects -----
+// ----- Portfolio -----
+function revalidatePortfolio() {
+  revalidatePath("/admin");
+  revalidatePath("/admin/work");
+  revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath("/projects/[slug]", "page");
+  revalidatePath("/");
+}
+
 export async function saveProject(id: string | null, fd: FormData) {
   await guard();
+  const kind = str(fd, "kind", "project");
+  if (kind !== "project" && kind !== "experience") throw new Error("Invalid portfolio section");
   const data = {
     slug: str(fd, "slug"),
     name: str(fd, "name"),
@@ -81,7 +92,7 @@ export async function saveProject(id: string | null, fd: FormData) {
     live: str(fd, "live"),
     code: str(fd, "code"),
     current: bool(fd, "current"),
-    kind: str(fd, "kind") || "project",
+    kind,
     order: int(fd, "order"),
   };
   if (id && id !== "new") {
@@ -89,18 +100,14 @@ export async function saveProject(id: string | null, fd: FormData) {
   } else {
     await prisma.project.create({ data });
   }
-  revalidatePath("/admin/projects");
-  revalidatePath("/projects");
-  revalidatePath("/");
-  redirect("/admin/projects");
+  revalidatePortfolio();
+  redirect(kind === "experience" ? "/admin/work" : "/admin/projects");
 }
 
 export async function deleteProject(id: string) {
   await guard();
   await prisma.project.delete({ where: { id } });
-  revalidatePath("/admin/projects");
-  revalidatePath("/projects");
-  revalidatePath("/");
+  revalidatePortfolio();
 }
 
 // ----- Socials -----
