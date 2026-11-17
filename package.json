@@ -12,6 +12,7 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:selected-projects": "tsx prisma/seed-selected-projects.ts",
+    "db:sync:github-projects": "tsx prisma/sync-github-projects.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {
