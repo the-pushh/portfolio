@@ -855,12 +855,20 @@ h1.editorial,
   gap: 5px;
   margin-left: 5px;
   padding: 0 0 26px 22px;
-  border-left: 1px solid var(--accent-line);
+}
+
+.work-timeline-entry:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  bottom: -9px;
+  left: -1px;
+  width: 1px;
+  background: var(--accent-line);
 }
 
 .work-timeline-entry:last-child {
   padding-bottom: 0;
-  border-left-color: transparent;
 }
 
 .work-timeline-entry::before {
@@ -870,7 +878,7 @@ h1.editorial,
   left: -5px;
   width: 9px;
   height: 9px;
-  border: 2px solid var(--bg);
+  z-index: 1;
   border-radius: 50%;
   background: var(--accent);
 }
@@ -882,11 +890,13 @@ h1.editorial,
 }
 
 .project-grid .work-name,
+.project-filmstrip .work-name,
 .work-timeline-entry .work-name {
   overflow-wrap: anywhere;
 }
 
 .project-grid .work-name a:hover,
+.project-filmstrip .work-name a:hover,
 .work-timeline-entry .work-name a:hover {
   color: var(--accent);
 }
@@ -899,6 +909,84 @@ h1.editorial,
 @media (max-width: 540px) {
   .project-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.project-filmstrip {
+  grid-column: 1 / -1;
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  min-width: 0;
+  transform: translateX(-50%);
+  --filmstrip-gap: clamp(10px, 2vw, 32px);
+  --filmstrip-card: calc((100% - var(--filmstrip-gap) * 2) / 3);
+}
+
+.project-filmstrip-track {
+  position: relative;
+  display: flex;
+  gap: var(--filmstrip-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding: 3px 0;
+}
+
+.project-filmstrip-track[data-playing] {
+  scroll-snap-type: none;
+}
+
+.project-filmstrip-track::before,
+.project-filmstrip-track::after {
+  content: "";
+  flex: 0 0 calc((100% - var(--filmstrip-card)) / 2 - var(--filmstrip-gap));
+}
+
+.project-filmstrip-slide {
+  display: flex;
+  flex: 0 0 var(--filmstrip-card);
+  min-width: 0;
+  scroll-snap-align: center;
+  opacity: 0.46;
+  transition: opacity 250ms ease;
+}
+
+.project-filmstrip-slide[data-centered],
+.project-filmstrip-slide:focus-within {
+  opacity: 1;
+}
+
+.project-filmstrip-slide .work-card {
+  width: 100%;
+}
+
+.project-filmstrip-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.project-filmstrip-empty {
+  grid-column: 2;
+}
+
+@media (max-width: 1100px) {
+  .project-filmstrip-empty {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .project-filmstrip {
+    --filmstrip-card: 76%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-filmstrip-slide {
+    transition: none;
   }
 }
 
