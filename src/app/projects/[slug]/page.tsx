@@ -83,7 +83,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
             margin: "14px 0",
           }}
         >
-          {p.role && (
+          {isExperience && p.role && (
             <div>
               <div className="tool-cat-name">role</div>
               <div>{p.role}</div>
