@@ -842,6 +842,66 @@ h1.editorial,
   margin-right: 1px;
 }
 
+/* Work timeline and project showcase */
+.work-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.work-timeline-entry {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  margin-left: 5px;
+  padding: 0 0 26px 22px;
+  border-left: 1px solid var(--accent-line);
+}
+
+.work-timeline-entry:last-child {
+  padding-bottom: 0;
+  border-left-color: transparent;
+}
+
+.work-timeline-entry::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: -5px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.project-grid .work-name,
+.work-timeline-entry .work-name {
+  overflow-wrap: anywhere;
+}
+
+.project-grid .work-name a:hover,
+.work-timeline-entry .work-name a:hover {
+  color: var(--accent);
+}
+
+.work-links svg {
+  display: inline;
+  vertical-align: middle;
+}
+
+@media (max-width: 540px) {
+  .project-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* Past projects grid */
 .past-grid {
   display: flex;

@@ -29,8 +29,10 @@ function mdToHtml(md: string): string {
 
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [p, all, cfg] = await Promise.all([getProjectBySlug(slug), getProjects(), getSiteConfig()]);
+  const [p, entries, cfg] = await Promise.all([getProjectBySlug(slug), getProjects(), getSiteConfig()]);
   if (!p) return notFound();
+  const isExperience = p.kind === "experience";
+  const all = entries.filter((entry) => (entry.kind === "experience") === isExperience);
   const i = all.findIndex((x) => x.slug === slug);
   const prev = i > 0 ? all[i - 1] : null;
   const next = i >= 0 && i < all.length - 1 ? all[i + 1] : null;
@@ -41,12 +43,12 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
         <nav className="breadcrumb">
           <Link href="/">home</Link>
           <span className="breadcrumb-sep">/</span>
-          <Link href="/projects">projects</Link>
+          <Link href={isExperience ? "/#work" : "/projects"}>{isExperience ? "work" : "projects"}</Link>
           <span className="breadcrumb-sep">/</span>
           <span className="breadcrumb-current">{p.name}</span>
         </nav>
         <div className="cli">
-          <span className="prompt">›</span> open ~/work/{p.slug}
+          <span className="prompt">›</span> open ~/{isExperience ? "work" : "projects"}/{p.slug}
         </div>
         <div className="poster" style={{ marginTop: 12 }}>
           <svg viewBox="0 0 320 140" width="100%" height="100%" preserveAspectRatio="none">
@@ -112,9 +114,9 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           ) : null}
         </div>
         <div className="pager">
-          {prev ? <Link href={`/projects/${prev.slug}`}>← {prev.name}</Link> : <span />}
+          {prev ? <Link href={`/projects/${encodeURIComponent(prev.slug)}`}>← {prev.name}</Link> : <span />}
           {next ? (
-            <Link href={`/projects/${next.slug}`} style={{ textAlign: "right" }}>
+            <Link href={`/projects/${encodeURIComponent(next.slug)}`} style={{ textAlign: "right" }}>
               {next.name} <ArrowRight size={13} weight="bold" style={{ display: "inline", verticalAlign: "middle" }} />
             </Link>
           ) : (

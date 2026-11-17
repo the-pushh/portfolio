@@ -5,6 +5,7 @@ import { useScroll } from "./ScrollContext";
 const BASE_ITEMS = [
   { id: "home", label: "home" },
   { id: "work", label: "work" },
+  { id: "projects", label: "projects" },
   { id: "toolbox", label: "toolbox" },
   { id: "thoughts", label: "thoughts" },
   { id: "connect", label: "connect" },

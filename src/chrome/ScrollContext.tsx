@@ -16,7 +16,7 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
 
   useEffect(() => {
-    const ids = ["home", "work", "toolbox", "thoughts", "connect"];
+    const ids = ["home", "work", "projects", "toolbox", "thoughts", "connect"];
 
     const obs = new IntersectionObserver(
       (entries) => {
