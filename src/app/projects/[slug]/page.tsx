@@ -18,6 +18,10 @@ function mdToHtml(md: string): string {
       if (!b) return "";
       if (b.startsWith("## ")) return `<h2>${b.slice(3)}</h2>`;
       if (b.startsWith("# ")) return `<h2>${b.slice(2)}</h2>`;
+      const items = b.split("\n");
+      if (items.every((item) => item.startsWith("- "))) {
+        return `<ul class="list-disc space-y-1 pl-5">${items.map((item) => `<li>${item.slice(2)}</li>`).join("")}</ul>`;
+      }
       const inline = b
         .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/\*(.+?)\*/g, "<em>$1</em>")
@@ -71,7 +75,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 140px), 1fr))",
             gap: 18,
             padding: "18px 0",
             borderTop: "1px solid var(--line-soft)",
@@ -79,18 +83,22 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
             margin: "14px 0",
           }}
         >
-          <div>
-            <div className="tool-cat-name">role</div>
-            <div>{p.role}</div>
-          </div>
+          {p.role && (
+            <div>
+              <div className="tool-cat-name">role</div>
+              <div>{p.role}</div>
+            </div>
+          )}
           <div>
             <div className="tool-cat-name">stack</div>
             <div>{p.tags.join(", ")}</div>
           </div>
-          <div>
-            <div className="tool-cat-name">when</div>
-            <div>{p.when}</div>
-          </div>
+          {p.when && (
+            <div>
+              <div className="tool-cat-name">when</div>
+              <div>{p.when}</div>
+            </div>
+          )}
         </div>
         <div
           className="detail-prose"

@@ -10,7 +10,7 @@ export default function ProjectGrid({ projects }: { projects: ProjectDTO[] }) {
       {projects.map((project) => (
         <article key={project.id} className="work-card">
           <div className="work-meta">
-            <p className="work-when">{project.when}</p>
+            {project.when && <p className="work-when">{project.when}</p>}
             <h3 className="work-name">
               <Link href={`/projects/${encodeURIComponent(project.slug)}`}>{project.name}</Link>
             </h3>
