@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
+    "db:project-images": "DIRECT_URL=\"${DIRECT_URL:-$DATABASE_URL}\" prisma db execute --schema prisma/schema.prisma --file prisma/project-images.sql",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:selected-projects": "tsx prisma/seed-selected-projects.ts",

@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import ProjectImage from "@/components/ProjectImage";
 import { getProjectById } from "@/lib/data";
 import { saveProject } from "./actions";
+import PortfolioForm from "./PortfolioForm";
 
 export default async function PortfolioEdit({ id, kind }: { id: string; kind: "experience" | "project" }) {
   const label = kind === "experience" ? "work experience" : "project";
@@ -13,15 +14,15 @@ export default async function PortfolioEdit({ id, kind }: { id: string; kind: "e
     redirect(`/admin/${entryKind === "experience" ? "work" : "projects"}/${id}`);
   }
 
-  async function action(fd: FormData) {
+  async function action(_error: string | null, fd: FormData) {
     "use server";
-    await saveProject(isNew ? null : id, fd);
+    return saveProject(isNew ? null : id, fd);
   }
 
   return (
     <div>
       <h1 className="admin-h1">{isNew ? "new" : "edit"} {label}</h1>
-      <form action={action} className="form-grid">
+      <PortfolioForm action={action}>
         <div className="form-row">
           <label>slug</label>
           <input name="slug" defaultValue={p?.slug ?? ""} required />
@@ -89,7 +90,7 @@ export default async function PortfolioEdit({ id, kind }: { id: string; kind: "e
             save
           </button>
         </div>
-      </form>
+      </PortfolioForm>
     </div>
   );
 }

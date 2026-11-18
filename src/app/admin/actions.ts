@@ -103,24 +103,34 @@ export async function saveProject(id: string | null, fd: FormData) {
     kind,
     order: int(fd, "order"),
   };
-  const image = await readProjectImage(fd.get("image"));
+  let image: Awaited<ReturnType<typeof readProjectImage>>;
+  try {
+    image = await readProjectImage(fd.get("image"));
+  } catch (error) {
+    return error instanceof Error ? error.message : "This image could not be read.";
+  }
   const removeImage = bool(fd, "removeImage");
 
-  await prisma.$transaction(async (tx) => {
-    const project = id && id !== "new"
-      ? await tx.project.update({ where: { id }, data, select: { id: true } })
-      : await tx.project.create({ data, select: { id: true } });
+  try {
+    await prisma.$transaction(async (tx) => {
+      const project = id && id !== "new"
+        ? await tx.project.update({ where: { id }, data, select: { id: true } })
+        : await tx.project.create({ data, select: { id: true } });
 
-    if (image) {
-      await tx.projectImage.upsert({
-        where: { projectId: project.id },
-        create: { projectId: project.id, ...image },
-        update: image,
-      });
-    } else if (removeImage) {
-      await tx.projectImage.deleteMany({ where: { projectId: project.id } });
-    }
-  });
+      if (image) {
+        await tx.projectImage.upsert({
+          where: { projectId: project.id },
+          create: { projectId: project.id, ...image },
+          update: image,
+        });
+      } else if (removeImage) {
+        await tx.projectImage.deleteMany({ where: { projectId: project.id } });
+      }
+    });
+  } catch (error) {
+    console.error("Project save failed", error);
+    return "Could not save the project. Your saved project and image are unchanged.";
+  }
   revalidatePortfolio();
   redirect(kind === "experience" ? "/admin/work" : "/admin/projects");
 }

@@ -1,3 +1,4 @@
 {
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "buildCommand": "npm run build && if [ \"$VERCEL_ENV\" = \"production\" ]; then npm run db:project-images; fi"
 }
