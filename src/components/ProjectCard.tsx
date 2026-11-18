@@ -2,9 +2,10 @@ import Link from "next/link";
 import PortfolioLinks from "@/components/PortfolioLinks";
 import type { ProjectDTO } from "@/types";
 
-export default function ProjectCard({ project }: { project: ProjectDTO }) {
+export default function ProjectCard({ project, reserveImage = false }: { project: ProjectDTO; reserveImage?: boolean }) {
   return (
     <article className="project-entry">
+      {reserveImage && <div className="project-entry-image" aria-hidden="true" />}
       <h3 className="project-entry-title">
         <Link href={`/projects/${encodeURIComponent(project.slug)}`}>{project.name}</Link>
       </h3>

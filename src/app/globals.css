@@ -914,6 +914,19 @@ h1.editorial,
   }
 }
 
+.projects-section {
+  grid-template-columns: minmax(0, 1fr);
+  text-align: center;
+}
+
+.projects-section .sec-head {
+  margin-bottom: 0;
+}
+
+.projects-section .sec-sub {
+  margin-inline: auto;
+}
+
 .project-entry {
   display: flex;
   flex-direction: column;
@@ -921,6 +934,14 @@ h1.editorial,
   gap: 10px;
   min-width: 0;
   text-align: center;
+}
+
+.project-entry-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 8px;
+  border-radius: var(--r-card);
+  background: var(--bg-2);
 }
 
 .project-entry-title {
@@ -961,11 +982,8 @@ h1.editorial,
 
 .project-filmstrip {
   grid-column: 1 / -1;
-  position: relative;
-  left: 50%;
-  width: 100vw;
   min-width: 0;
-  transform: translateX(-50%);
+  margin-inline: calc((100% - 100vw) / 2);
   --filmstrip-gap: clamp(4px, 1vw, 18px);
   --filmstrip-card: calc(min(100vw, var(--col-w)) - 2 * var(--page-inset) - var(--section-gutter));
   --filmstrip-fade: min(16vw, calc((100vw - var(--filmstrip-card)) / 2));

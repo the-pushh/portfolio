@@ -85,7 +85,7 @@ export default function ProjectFilmstrip({ projects }: { projects: ProjectDTO[] 
               inert={duplicate}
               aria-hidden={duplicate || undefined}
             >
-              <ProjectCard project={project} />
+              <ProjectCard project={project} reserveImage />
             </div>
           );
         })}
