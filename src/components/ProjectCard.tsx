@@ -13,7 +13,7 @@ export default function ProjectCard({ project }: { project: ProjectDTO }) {
       <PortfolioLinks entry={project} />
       {project.tags.length > 0 && (
         <ul className="project-entry-skills" aria-label="Skills">
-          {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
+          {project.tags.map((tag) => <li key={tag} className="proj-tag">{tag}</li>)}
         </ul>
       )}
     </article>

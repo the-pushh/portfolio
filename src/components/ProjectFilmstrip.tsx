@@ -82,7 +82,6 @@ export default function ProjectFilmstrip({ projects }: { projects: ProjectDTO[] 
               key={`${project.id}-${index}`}
               className="project-filmstrip-slide"
               data-centered={center === index || undefined}
-              data-left={index === center - 1 || undefined}
               inert={duplicate}
               aria-hidden={duplicate || undefined}
             >
