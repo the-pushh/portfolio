@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import ProjectImage from "@/components/ProjectImage";
 import { getProjectById } from "@/lib/data";
 import { saveProject } from "./actions";
 
@@ -57,6 +58,15 @@ export default async function PortfolioEdit({ id, kind }: { id: string; kind: "e
           <label>code url</label>
           <input name="code" defaultValue={p?.code ?? ""} />
         </div>
+        {kind === "project" && (
+          <div className="form-row">
+            <label htmlFor="project-image">project image</label>
+            {p && <ProjectImage key={p.id} id={p.id} />}
+            <input id="project-image" name="image" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="project-image-help" />
+            <small id="project-image-help">PNG, JPEG, or WebP up to 1 MB.</small>
+            {p && <label><input type="checkbox" name="removeImage" /> Remove uploaded image</label>}
+          </div>
+        )}
         <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
           <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <input type="checkbox" name="current" defaultChecked={p?.current ?? false} />

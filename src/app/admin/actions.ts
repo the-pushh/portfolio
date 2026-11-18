@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/auth";
+import { readProjectImage } from "@/lib/project-image-upload";
+import { addSelectedProjects } from "../../../prisma/selected-projects";
 
 async function guard() {
   if (!(await isAdmin())) throw new Error("unauthorized");
@@ -77,6 +79,12 @@ function revalidatePortfolio() {
   revalidatePath("/");
 }
 
+export async function importSelectedProjects() {
+  await guard();
+  await addSelectedProjects(prisma);
+  revalidatePortfolio();
+}
+
 export async function saveProject(id: string | null, fd: FormData) {
   await guard();
   const kind = str(fd, "kind", "project");
@@ -95,11 +103,24 @@ export async function saveProject(id: string | null, fd: FormData) {
     kind,
     order: int(fd, "order"),
   };
-  if (id && id !== "new") {
-    await prisma.project.update({ where: { id }, data });
-  } else {
-    await prisma.project.create({ data });
-  }
+  const image = await readProjectImage(fd.get("image"));
+  const removeImage = bool(fd, "removeImage");
+
+  await prisma.$transaction(async (tx) => {
+    const project = id && id !== "new"
+      ? await tx.project.update({ where: { id }, data, select: { id: true } })
+      : await tx.project.create({ data, select: { id: true } });
+
+    if (image) {
+      await tx.projectImage.upsert({
+        where: { projectId: project.id },
+        create: { projectId: project.id, ...image },
+        update: image,
+      });
+    } else if (removeImage) {
+      await tx.projectImage.deleteMany({ where: { projectId: project.id } });
+    }
+  });
   revalidatePortfolio();
   redirect(kind === "experience" ? "/admin/work" : "/admin/projects");
 }

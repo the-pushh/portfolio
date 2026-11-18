@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { getProjects } from "@/lib/data";
-import { deleteProject } from "./actions";
+import { deleteProject, importSelectedProjects } from "./actions";
+import { selectedProjectSlugs } from "../../../prisma/selected-projects";
 
 export default async function PortfolioList({ kind }: { kind: "experience" | "project" }) {
   const isWork = kind === "experience";
   const path = isWork ? "/admin/work" : "/admin/projects";
   const entries = (await getProjects()).filter((entry) => (entry.kind === "experience") === isWork);
+  const showImport = !isWork && selectedProjectSlugs.some((slug) => !entries.some((entry) => entry.slug === slug));
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -14,6 +16,11 @@ export default async function PortfolioList({ kind }: { kind: "experience" | "pr
           {isWork ? "+ new work experience" : "+ new project"}
         </Link>
       </div>
+      {showImport && (
+        <form action={importSelectedProjects}>
+          <button className="btn" type="submit">Import hum, Traffic Simulator, and Handyman</button>
+        </form>
+      )}
       <table className="admin-table">
         <thead>
           <tr>

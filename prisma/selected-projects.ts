@@ -134,6 +134,8 @@ The challenge was combining uncertain AI perception with an interface that remai
   },
 ];
 
+export const selectedProjectSlugs = selectedProjects.map(({ slug }) => slug);
+
 export function addSelectedProjects(prisma: PrismaClient) {
   return prisma.project.createMany({
     data: selectedProjects.map((project) => ({

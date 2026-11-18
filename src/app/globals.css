@@ -936,6 +936,17 @@ h1.editorial,
   background: var(--bg-2);
 }
 
+.project-entry-image {
+  overflow: hidden;
+}
+
+.project-entry-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .project-entry-title {
   overflow-wrap: anywhere;
 }
