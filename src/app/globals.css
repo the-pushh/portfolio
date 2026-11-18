@@ -916,6 +916,8 @@ h1.editorial,
 
 .projects-section {
   grid-template-columns: minmax(0, 1fr);
+  row-gap: 12px;
+  padding-block: 32px;
   text-align: center;
 }
 
@@ -937,15 +939,13 @@ h1.editorial,
 }
 
 .project-entry-image {
-  width: 100%;
+  width: min(50%, 40svh);
   aspect-ratio: 16 / 9;
-  margin-bottom: 8px;
   border-radius: var(--r-card);
   background: var(--bg-2);
 }
 
 .project-entry-title {
-  margin: 0;
   overflow-wrap: anywhere;
 }
 
@@ -1017,7 +1017,7 @@ h1.editorial,
   flex: 0 0 var(--filmstrip-card);
   min-width: 0;
   scroll-snap-align: center;
-  padding: 12px 0;
+  padding: 6px 0;
   opacity: 0.36;
   transition: opacity 250ms ease;
 }
@@ -1035,7 +1035,7 @@ h1.editorial,
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 4px;
 }
 
 .project-filmstrip-arrow {
