@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { addSelectedProjects } from "./selected-projects";
 
 const prisma = new PrismaClient();
 
@@ -195,6 +196,8 @@ If someone is reaching out I want to know what they are building, what problem t
       },
     });
   }
+
+  await addSelectedProjects(prisma);
 
   // ---------- Toolbox ----------
   const toolboxData = [

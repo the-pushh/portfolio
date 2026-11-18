@@ -4,15 +4,17 @@ import { prisma } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [tCount, pCount, sCount, plCount] = await Promise.all([
+  const [tCount, wCount, pCount, sCount, plCount] = await Promise.all([
     prisma.thought.count(),
-    prisma.project.count(),
+    prisma.project.count({ where: { kind: "experience" } }),
+    prisma.project.count({ where: { kind: { not: "experience" } } }),
     prisma.social.count(),
     prisma.spotifyPlaylist.count(),
   ]);
 
   const cards = [
     { href: "/admin/thoughts", label: "thoughts", count: tCount },
+    { href: "/admin/work", label: "work", count: wCount },
     { href: "/admin/projects", label: "projects", count: pCount },
     { href: "/admin/socials", label: "socials", count: sCount },
     { href: "/admin/playlists", label: "playlists", count: plCount },

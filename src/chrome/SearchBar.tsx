@@ -54,6 +54,7 @@ export default function SearchBar({ onOpenChat, hasThoughts = true }: { onOpenCh
     const base = [
       { id: "home", label: "home" },
       { id: "work", label: "work" },
+      { id: "projects", label: "projects" },
       { id: "toolbox", label: "toolbox" },
       ...(hasThoughts ? [{ id: "thoughts", label: "thoughts" }] : []),
       { id: "connect", label: "connect" },
@@ -83,6 +84,7 @@ export default function SearchBar({ onOpenChat, hasThoughts = true }: { onOpenCh
   function jump(id: string) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
+    else router.push(`/#${id}`);
   }
 
   const filtered = useMemo(() => {
@@ -107,10 +109,12 @@ export default function SearchBar({ onOpenChat, hasThoughts = true }: { onOpenCh
         return;
       }
       if (!open) {
-        if ((e.metaKey || e.ctrlKey) && /^[1-5]$/.test(e.key)) {
-          e.preventDefault();
+        if ((e.metaKey || e.ctrlKey) && /^[1-9]$/.test(e.key)) {
           const s = sections[Number(e.key) - 1];
-          if (s) jump(s.id);
+          if (s) {
+            e.preventDefault();
+            jump(s.id);
+          }
         }
         return;
       }
