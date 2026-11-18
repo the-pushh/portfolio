@@ -915,18 +915,8 @@ h1.editorial,
 }
 
 .projects-section {
-  grid-template-columns: minmax(0, 1fr);
   row-gap: 12px;
   padding-block: 32px;
-  text-align: center;
-}
-
-.projects-section .sec-head {
-  margin-bottom: 0;
-}
-
-.projects-section .sec-sub {
-  margin-inline: auto;
 }
 
 .project-entry {
@@ -939,8 +929,9 @@ h1.editorial,
 }
 
 .project-entry-image {
-  width: min(50%, 40svh);
+  width: min(60%, 48svh);
   aspect-ratio: 16 / 9;
+  margin-bottom: 6px;
   border-radius: var(--r-card);
   background: var(--bg-2);
 }
