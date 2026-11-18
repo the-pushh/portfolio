@@ -1,15 +1,16 @@
 "use client";
 
-const FILE: Record<string, string> = {
+const FILE = {
   home: "/icons/home.svg",
   work: "/icons/work.svg",
+  projects: "/icons/projects.svg",
   toolbox: "/icons/toolbox.svg",
   thoughts: "/icons/thoughts.svg",
   connect: "/icons/hello.svg",
 };
 
 type Props = {
-  name: "home" | "work" | "toolbox" | "thoughts" | "connect";
+  name: keyof typeof FILE;
   size?: number;
 };
 

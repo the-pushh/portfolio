@@ -10,6 +10,9 @@ export default function WorkSection({ experience }: { experience: ProjectDTO[] }
         <SectionIcon name="work" />
       </div>
       <div className="section-body">
+        <div className="cli">
+          <span className="prompt">›</span> cat work.log
+        </div>
         <div className="sec-head">
           <h2 id="work-heading">work.</h2>
         </div>
