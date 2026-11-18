@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Shell from "@/chrome/Shell";
-import { getProjects, getSiteConfig } from "@/lib/data";
+import { getSiteConfig } from "@/lib/data";
+import { getPublicProjects } from "@/lib/public-projects";
 import ProjectGrid from "@/components/ProjectGrid";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProjectsIndex() {
-  const [entries, cfg] = await Promise.all([getProjects(), getSiteConfig()]);
+  const [entries, cfg] = await Promise.all([getPublicProjects(), getSiteConfig()]);
   const projects = entries.filter((entry) => entry.kind !== "experience");
 
   return (

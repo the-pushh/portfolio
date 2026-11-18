@@ -4,6 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ProjectCard from "@/components/ProjectCard";
 import type { ProjectDTO } from "@/types";
 
+const MOBILE_LAYOUT = "(max-width: 720px)";
+
 export default function ProjectFilmstrip({ projects }: { projects: ProjectDTO[] }) {
   const track = useRef<HTMLDivElement>(null);
   const canLoop = projects.length > 2;
@@ -24,15 +26,24 @@ export default function ProjectFilmstrip({ projects }: { projects: ProjectDTO[] 
   }
 
   useLayoutEffect(() => {
-    active.current = first;
-    centerSlide(first, "instant");
+    const mobile = window.matchMedia(MOBILE_LAYOUT);
+    const positionDesktop = () => {
+      if (mobile.matches) return;
+      active.current = first;
+      centerSlide(first, "instant");
+    };
+    positionDesktop();
+    mobile.addEventListener("change", positionDesktop);
+    return () => mobile.removeEventListener("change", positionDesktop);
   }, [first, projects.length]);
 
   useEffect(() => {
     const viewport = track.current;
     if (!viewport) return;
+    const mobile = window.matchMedia(MOBILE_LAYOUT);
     let settle: ReturnType<typeof setTimeout>;
     const onScroll = () => {
+      if (mobile.matches) return;
       const middle = viewport.scrollLeft + viewport.clientWidth / 2;
       const width = (viewport.firstElementChild as HTMLElement).offsetWidth;
       const start = (viewport.firstElementChild as HTMLElement).offsetLeft + width / 2;
@@ -43,7 +54,7 @@ export default function ProjectFilmstrip({ projects }: { projects: ProjectDTO[] 
       setCenter(index);
       clearTimeout(settle);
       settle = setTimeout(() => {
-        if (!canLoop || (index >= first && index <= last)) return;
+        if (mobile.matches || !canLoop || (index >= first && index <= last)) return;
         const target = index < first ? last : first + index - last - 1;
         centerSlide(target, "instant");
       }, 140);
@@ -62,13 +73,14 @@ export default function ProjectFilmstrip({ projects }: { projects: ProjectDTO[] 
   }
 
   return (
-    <div className="project-filmstrip" role="group" aria-label="Project carousel">
+    <div className="project-filmstrip" role="group" aria-label="Projects">
       <div
         ref={track}
         className="project-filmstrip-track"
         tabIndex={0}
         aria-label="Scroll through projects"
         onKeyDown={(event) => {
+          if (window.matchMedia(MOBILE_LAYOUT).matches) return;
           if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             event.preventDefault();
             move(event.key === "ArrowLeft" ? -1 : 1);

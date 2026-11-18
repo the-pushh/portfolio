@@ -6,7 +6,11 @@ import type { ProjectDTO } from "@/types";
 export default function ProjectCard({ project, reserveImage = false }: { project: ProjectDTO; reserveImage?: boolean }) {
   return (
     <article className="project-entry">
-      {reserveImage && <ProjectImage key={project.id} id={project.id} />}
+      {reserveImage && (
+        project.id.startsWith("selected:")
+          ? <div className="project-entry-image" aria-hidden="true" />
+          : <ProjectImage key={project.id} id={project.id} />
+      )}
       <h3 className="project-entry-title">
         <Link href={`/projects/${encodeURIComponent(project.slug)}`}>{project.name}</Link>
       </h3>

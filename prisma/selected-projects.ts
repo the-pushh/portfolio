@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 
-const selectedProjects = [
+export const selectedProjects = [
   {
     slug: "hum",
     name: "hum",

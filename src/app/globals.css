@@ -1063,6 +1063,32 @@ h1.editorial,
   }
 }
 
+@media (max-width: 720px) {
+  .project-filmstrip {
+    margin-inline: 0;
+  }
+
+  .project-filmstrip-track {
+    display: grid;
+    gap: 28px;
+    overflow: visible;
+    overscroll-behavior-x: auto;
+    scroll-snap-type: none;
+    mask-image: none;
+  }
+
+  .project-filmstrip-track::before,
+  .project-filmstrip-track::after,
+  .project-filmstrip-slide[aria-hidden="true"],
+  .project-filmstrip-controls {
+    display: none;
+  }
+
+  .project-filmstrip-slide {
+    opacity: 1;
+  }
+}
+
 /* Past projects grid */
 .past-grid {
   display: flex;

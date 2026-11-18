@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Shell from "@/chrome/Shell";
-import { getProjectBySlug, getProjects, getSiteConfig } from "@/lib/data";
+import { getSiteConfig } from "@/lib/data";
+import { getPublicProjects } from "@/lib/public-projects";
 import { ArrowUpRight, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 export const dynamic = "force-dynamic";
@@ -33,7 +34,8 @@ function mdToHtml(md: string): string {
 
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [p, entries, cfg] = await Promise.all([getProjectBySlug(slug), getProjects(), getSiteConfig()]);
+  const [entries, cfg] = await Promise.all([getPublicProjects(), getSiteConfig()]);
+  const p = entries.find((entry) => entry.slug === slug);
   if (!p) return notFound();
   const isExperience = p.kind === "experience";
   const all = entries.filter((entry) => (entry.kind === "experience") === isExperience);

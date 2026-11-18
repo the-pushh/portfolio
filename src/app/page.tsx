@@ -5,12 +5,13 @@ import ToolboxSection from "@/sections/ToolboxSection";
 import ThoughtsSection from "@/sections/ThoughtsSection";
 import ContactSection from "@/sections/ContactSection";
 import Shell from "@/chrome/Shell";
-import { getProjects, getSiteConfig, getThoughts } from "@/lib/data";
+import { getSiteConfig, getThoughts } from "@/lib/data";
+import { getPublicProjects } from "@/lib/public-projects";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [cfg, thoughts, entries] = await Promise.all([getSiteConfig(), getThoughts(), getProjects()]);
+  const [cfg, thoughts, entries] = await Promise.all([getSiteConfig(), getThoughts(), getPublicProjects()]);
   const experience = entries.filter((entry) => entry.kind === "experience");
   const projects = entries.filter((entry) => entry.kind !== "experience");
   return (
